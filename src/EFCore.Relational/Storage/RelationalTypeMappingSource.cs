@@ -325,8 +325,16 @@ public abstract class RelationalTypeMappingSource : TypeMappingSourceBase, IRela
     /// </remarks>
     /// <param name="type">The CLR type.</param>
     /// <returns>The type mapping, or <see langword="null" /> if none was found.</returns>
+#if NETSTANDARD2_1
+    public override CoreTypeMapping? FindMapping(Type type)
+        => FindMappingWithConversion(new RelationalTypeMappingInfo(type), null);
+
+    RelationalTypeMapping? IRelationalTypeMappingSource.FindMapping(Type type)
+        => (RelationalTypeMapping?)FindMapping(type);
+#else
     public override RelationalTypeMapping? FindMapping(Type type)
         => FindMappingWithConversion(new RelationalTypeMappingInfo(type), null);
+#endif
 
     /// <summary>
     ///     Finds the type mapping for a given <see cref="Type" />, taking pre-convention configuration into the account.
@@ -339,7 +347,11 @@ public abstract class RelationalTypeMappingSource : TypeMappingSourceBase, IRela
     /// <param name="model">The model.</param>
     /// <param name="elementMapping">The element mapping to use, if known.</param>
     /// <returns>The type mapping, or <see langword="null" /> if none was found.</returns>
+#if NETSTANDARD2_1
+    public override CoreTypeMapping? FindMapping(Type type, IModel model, CoreTypeMapping? elementMapping = null)
+#else
     public override RelationalTypeMapping? FindMapping(Type type, IModel model, CoreTypeMapping? elementMapping = null)
+#endif
     {
         type = type.UnwrapNullableType();
         var typeConfiguration = model.FindTypeMappingConfiguration(type);
@@ -385,6 +397,11 @@ public abstract class RelationalTypeMappingSource : TypeMappingSourceBase, IRela
         return FindMappingWithConversion(mappingInfo, providerClrType, customConverter);
     }
 
+#if NETSTANDARD2_1
+    RelationalTypeMapping? IRelationalTypeMappingSource.FindMapping(Type type, IModel model, CoreTypeMapping? elementMapping)
+        => (RelationalTypeMapping?)FindMapping(type, model, elementMapping);
+#endif
+
     /// <summary>
     ///     Finds the type mapping for a given <see cref="MemberInfo" /> representing
     ///     a field or a property of a CLR type.
@@ -400,7 +417,11 @@ public abstract class RelationalTypeMappingSource : TypeMappingSourceBase, IRela
     /// </remarks>
     /// <param name="member">The field or property.</param>
     /// <returns>The type mapping, or <see langword="null" /> if none was found.</returns>
+#if NETSTANDARD2_1
+    public override CoreTypeMapping? FindMapping(MemberInfo member)
+#else
     public override RelationalTypeMapping? FindMapping(MemberInfo member)
+#endif
     {
         // TODO: Remove this, see #11124
         if (member.GetCustomAttribute<ColumnAttribute>(true) is ColumnAttribute attribute)
@@ -419,6 +440,11 @@ public abstract class RelationalTypeMappingSource : TypeMappingSourceBase, IRela
 
         return FindMappingWithConversion(new RelationalTypeMappingInfo(member), null);
     }
+
+#if NETSTANDARD2_1
+    RelationalTypeMapping? IRelationalTypeMappingSource.FindMapping(MemberInfo member)
+        => (RelationalTypeMapping?)FindMapping(member);
+#endif
 
     /// <summary>
     ///     Finds the type mapping for a given database type name.

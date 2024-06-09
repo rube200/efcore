@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace Microsoft.EntityFrameworkCore.Query.SqlExpressions;
@@ -535,7 +536,14 @@ public sealed partial class SelectExpression
             return this;
         }
 
+#if NETSTANDARD2_1
+        public ConcreteColumnExpression MakeNullableConcrete()
+            => (ConcreteColumnExpression) MakeNullable();
+
+        public override ColumnExpression MakeNullable()
+#else
         public override ConcreteColumnExpression MakeNullable()
+#endif
             => IsNullable ? this : new ConcreteColumnExpression(Name, _table, Type, TypeMapping, true);
 
         public override SqlExpression ApplyTypeMapping(RelationalTypeMapping? typeMapping)
@@ -844,7 +852,12 @@ public sealed partial class SelectExpression
                     var newProjections = selectExpression._projection.Select(Visit).ToList<ProjectionExpression>();
 
                     var newTables = selectExpression._tables.Select(Visit).ToList<TableExpressionBase>();
-                    var tpcTablesMap = selectExpression._tables.Select(UnwrapJoinExpression).Zip(newTables.Select(UnwrapJoinExpression))
+                    var tpcTablesMap = selectExpression._tables.Select(UnwrapJoinExpression)
+#if NETSTANDARD2_1
+                        .Zip(newTables.Select(UnwrapJoinExpression), (First, Second) => (First, Second))
+#else
+                        .Zip(newTables.Select(UnwrapJoinExpression))
+#endif
                         .Where(e => e.First is TpcTablesExpression)
                         .ToDictionary(e => (TpcTablesExpression)e.First, e => (TpcTablesExpression)e.Second);
 

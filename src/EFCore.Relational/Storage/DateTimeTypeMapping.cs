@@ -8,7 +8,7 @@ namespace Microsoft.EntityFrameworkCore.Storage;
 
 /// <summary>
 ///     <para>
-///         Represents the mapping between a .NET <see cref="DateTime" /> type and a database type.
+///         Represents the mapping between a .NET <see cref="System.DateTime" /> type and a database type.
 ///     </para>
 ///     <para>
 ///         This type is typically used by database providers (and other extensions). It is generally

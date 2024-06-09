@@ -912,11 +912,11 @@ public sealed partial class SelectExpression : TableExpressionBase
                     if (otherExpressions.Count == 0)
                     {
                         // If there are no other expressions then we can use all entityProjectionIdentifiers
-                        _identifier.AddRange(typeProjectionIdentifiers.Zip(typeProjectionValueComparers));
+                        _identifier.AddRange(typeProjectionIdentifiers.Zip(typeProjectionValueComparers, (f, s) => (f, s)));
                     }
                     else if (otherExpressions.All(e => e is ColumnExpression))
                     {
-                        _identifier.AddRange(typeProjectionIdentifiers.Zip(typeProjectionValueComparers));
+                        _identifier.AddRange(typeProjectionIdentifiers.Zip(typeProjectionValueComparers, (f, s) => (f, s)));
                         _identifier.AddRange(otherExpressions.Select(e => ((ColumnExpression)e, e.TypeMapping!.KeyComparer)));
                     }
                 }
@@ -2277,7 +2277,7 @@ public sealed partial class SelectExpression : TableExpressionBase
         _groupBy.AddRange(groupByTerms);
 
         var clonedSelectExpression = Clone();
-        var correlationPredicate = groupByTerms.Zip(clonedSelectExpression._groupBy)
+        var correlationPredicate = groupByTerms.Zip(clonedSelectExpression._groupBy, (First, Second) => (First, Second))
             .Select(e => sqlExpressionFactory.Equal(e.First, e.Second))
             .Aggregate(sqlExpressionFactory.AndAlso);
         clonedSelectExpression._groupBy.Clear();
@@ -2607,7 +2607,11 @@ public sealed partial class SelectExpression : TableExpressionBase
             if (IsNullableProjection(innerProjection1)
                 || IsNullableProjection(innerProjection2))
             {
+#if NETSTANDARD2_1
+                outerProjection = outerProjection.MakeNullableConcrete();
+#else
                 outerProjection = outerProjection.MakeNullable();
+#endif
             }
 
             _projectionMapping[projectionMember] = outerProjection;
@@ -2684,11 +2688,11 @@ public sealed partial class SelectExpression : TableExpressionBase
                 if (otherExpressions.Count == 0)
                 {
                     // If there are no other expressions then we can use all entityProjectionIdentifiers
-                    _identifier.AddRange(entityProjectionIdentifiers.Zip(entityProjectionValueComparers));
+                    _identifier.AddRange(entityProjectionIdentifiers.Zip(entityProjectionValueComparers, (f, s) => (f, s)));
                 }
                 else if (otherExpressions.All(e => e.Expression is ColumnExpression))
                 {
-                    _identifier.AddRange(entityProjectionIdentifiers.Zip(entityProjectionValueComparers));
+                    _identifier.AddRange(entityProjectionIdentifiers.Zip(entityProjectionValueComparers, (f, s) => (f, s)));
                     _identifier.AddRange(otherExpressions.Select(e => ((ColumnExpression)e.Expression, e.Comparer)));
                 }
             }
@@ -2732,7 +2736,11 @@ public sealed partial class SelectExpression : TableExpressionBase
                         if (column1.IsNullable
                             || column2.IsNullable)
                         {
+#if NETSTANDARD2_1
+                            outerColumn = outerColumn.MakeNullableConcrete();
+#else
                             outerColumn = outerColumn.MakeNullable();
+#endif
                         }
 
                         propertyExpressions[property] = outerColumn;
@@ -2846,7 +2854,11 @@ public sealed partial class SelectExpression : TableExpressionBase
                         if (column1.IsNullable
                             || column2.IsNullable)
                         {
+#if NETSTANDARD2_1
+                            outerColumn = outerColumn.MakeNullableConcrete();
+#else
                             outerColumn = outerColumn.MakeNullable();
+#endif
                         }
 
                         propertyExpressions[property] = outerColumn;
@@ -3086,7 +3098,11 @@ public sealed partial class SelectExpression : TableExpressionBase
                     var outerColumn = subquery.GenerateOuterColumn(subqueryTableReferenceExpression, columnExpression);
                     if (changeNullability)
                     {
+#if NETSTANDARD2_1
+                        outerColumn = outerColumn.MakeNullableConcrete();
+#else
                         outerColumn = outerColumn.MakeNullable();
+#endif
                     }
 
                     propertyExpressions[property] = outerColumn;
@@ -3229,7 +3245,8 @@ public sealed partial class SelectExpression : TableExpressionBase
             var outerJoinPredicate = ownerJoinColumns
                 .Zip(
                     navigation.ForeignKey.Properties
-                        .Select(p => CreateColumnExpression(p, dependentMainTable, mainTableReferenceExpression, nullable: false)))
+                        .Select(p => CreateColumnExpression(p, dependentMainTable, mainTableReferenceExpression, nullable: false)),
+                    (First, Second) => (First, Second))
                 .Select(i => sqlExpressionFactory.Equal(i.First, i.Second))
                 .Aggregate(sqlExpressionFactory.AndAlso);
             var joinedTable = new LeftJoinExpression(ownedTable, outerJoinPredicate);
@@ -4978,9 +4995,9 @@ public sealed partial class SelectExpression : TableExpressionBase
                     newSelectExpression._tpcDiscriminatorValues[kvp.Key] = kvp.Value;
                 }
 
-                newSelectExpression._identifier.AddRange(identifier.Zip(_identifier).Select(e => (e.First, e.Second.Comparer)));
+                newSelectExpression._identifier.AddRange(identifier.Zip(_identifier, (First, Second) => (First, Second)).Select(e => (e.First, e.Second.Comparer)));
                 newSelectExpression._childIdentifiers.AddRange(
-                    childIdentifier.Zip(_childIdentifiers).Select(e => (e.First, e.Second.Comparer)));
+                    childIdentifier.Zip(_childIdentifiers, (First, Second) => (First, Second)).Select(e => (e.First, e.Second.Comparer)));
 
                 // We duplicated the SelectExpression, and must therefore also update all table reference expressions to point to it.
                 // If any tables have changed, we must duplicate the TableReferenceExpressions and replace all ColumnExpressions to use

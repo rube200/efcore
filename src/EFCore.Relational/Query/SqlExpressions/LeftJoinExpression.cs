@@ -48,10 +48,26 @@ public class LeftJoinExpression : PredicateJoinExpressionBase
     /// <param name="table">The <see cref="JoinExpressionBase.Table" /> property of the result.</param>
     /// <param name="joinPredicate">The <see cref="PredicateJoinExpressionBase.JoinPredicate" /> property of the result.</param>
     /// <returns>This expression if no children changed, or an expression with the updated children.</returns>
+#if NETSTANDARD2_1
+    public override PredicateJoinExpressionBase Update(TableExpressionBase table, SqlExpression joinPredicate)
+#else
     public override LeftJoinExpression Update(TableExpressionBase table, SqlExpression joinPredicate)
+#endif
         => table != Table || joinPredicate != JoinPredicate
             ? new LeftJoinExpression(table, joinPredicate, GetAnnotations())
             : this;
+
+#if NETSTANDARD2_1
+    /// <summary>
+    ///     Creates a new expression that is like this one, but using the supplied children. If all of the children are the same, it will
+    ///     return this expression.
+    /// </summary>
+    /// <param name="table">The <see cref="JoinExpressionBase.Table" /> property of the result.</param>
+    /// <param name="joinPredicate">The <see cref="PredicateJoinExpressionBase.JoinPredicate" /> property of the result.</param>
+    /// <returns>This expression if no children changed, or an expression with the updated children.</returns>
+    public LeftJoinExpression UpdateLeft(TableExpressionBase table, SqlExpression joinPredicate)
+        => (LeftJoinExpression)Update(table, joinPredicate);
+#endif
 
     /// <summary>
     ///     Creates a new expression that is like this one, but using the supplied children. If all of the children are the same, it will
@@ -59,10 +75,25 @@ public class LeftJoinExpression : PredicateJoinExpressionBase
     /// </summary>
     /// <param name="table">The <see cref="JoinExpressionBase.Table" /> property of the result.</param>
     /// <returns>This expression if no children changed, or an expression with the updated children.</returns>
+#if NETSTANDARD2_1
+    public override JoinExpressionBase Update(TableExpressionBase table)
+#else
     public override LeftJoinExpression Update(TableExpressionBase table)
+#endif
         => table != Table
             ? new LeftJoinExpression(table, JoinPredicate, GetAnnotations())
             : this;
+
+#if NETSTANDARD2_1
+    /// <summary>
+    ///     Creates a new expression that is like this one, but using the supplied children. If all of the children are the same, it will
+    ///     return this expression.
+    /// </summary>
+    /// <param name="table">The <see cref="JoinExpressionBase.Table" /> property of the result.</param>
+    /// <returns>This expression if no children changed, or an expression with the updated children.</returns>
+    public LeftJoinExpression UpdateLeft(TableExpressionBase table)
+        => (LeftJoinExpression)Update(table);
+#endif
 
     /// <inheritdoc />
     protected override TableExpressionBase CreateWithAnnotations(IEnumerable<IAnnotation> annotations)

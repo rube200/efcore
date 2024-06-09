@@ -56,7 +56,7 @@ public abstract class RelationalGeometryTypeMapping<TGeometry, TProvider> : Rela
     }
 
     private static ValueComparer? CreateProviderValueComparer(Type providerType)
-        => providerType.IsAssignableTo(typeof(TGeometry))
+        => typeof(TGeometry).IsAssignableFrom(providerType)
             ? (ValueComparer)Activator.CreateInstance(typeof(GeometryValueComparer<>).MakeGenericType(providerType))!
             : null;
 

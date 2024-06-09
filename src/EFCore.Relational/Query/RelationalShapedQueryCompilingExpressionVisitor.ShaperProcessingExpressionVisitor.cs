@@ -1589,7 +1589,12 @@ public partial class RelationalShapedQueryCompilingExpressionVisitor
                             var newVariables = innerBlock.Variables.ToList();
                             var proxyConversionVariable = Variable(jsonEntityTypeInitializerUnary.Type);
                             newVariables.Add(proxyConversionVariable);
+#if NETSTANDARD2_1
+                            var iBlock = innerBlock.Expressions.ToList();
+                            var newExpressions = iBlock.GetRange(0, iBlock.Count - 1).ToList();
+#else
                             var newExpressions = innerBlock.Expressions.ToList()[..^1];
+#endif
                             newExpressions.Add(
                                 Assign(proxyConversionVariable, jsonEntityTypeInitializerUnary.Update(innerBlock.Expressions[^1])));
                             newExpressions.Add(proxyConversionVariable);

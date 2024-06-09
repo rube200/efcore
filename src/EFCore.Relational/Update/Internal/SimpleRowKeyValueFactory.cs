@@ -127,8 +127,12 @@ public class SimpleRowKeyValueFactory<TKey> : IRowKeyValueFactory<TKey>
         public bool Equals(TKey? x, TKey? y)
             => _comparer.Equals(x, y);
 
+#if NETSTANDARD2_1
+        public int GetHashCode(TKey obj)
+#else
         public int GetHashCode([DisallowNull] TKey obj)
-            => _comparer.GetHashCode(obj);
+#endif
+             => _comparer.GetHashCode(obj);
     }
 
     private sealed class NoNullsCustomEqualityComparer : IEqualityComparer<TKey>
@@ -165,7 +169,11 @@ public class SimpleRowKeyValueFactory<TKey> : IRowKeyValueFactory<TKey>
         public bool Equals(TKey? x, TKey? y)
             => _equals(x, y);
 
+#if NETSTANDARD2_1
+        public int GetHashCode(TKey obj)
+#else
         public int GetHashCode([DisallowNull] TKey obj)
+#endif
             => _hashCode(obj);
     }
 }

@@ -253,7 +253,7 @@ public static class RelationalLoggerExtensions
             }
         }
 
-        return ValueTask.FromResult(transaction);
+        return new ValueTask<DbTransaction>(transaction);
     }
 
     private static TransactionEndEventData BroadcastTransactionStarted(
@@ -388,7 +388,7 @@ public static class RelationalLoggerExtensions
             }
         }
 
-        return ValueTask.FromResult(transaction);
+        return new ValueTask<DbTransaction>(transaction);
     }
 
     private static TransactionEventData BroadcastTransactionUsed(
