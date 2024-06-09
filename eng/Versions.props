@@ -11,7 +11,8 @@
     -->
     <StabilizePackageVersion Condition="'$(StabilizePackageVersion)' == ''">true</StabilizePackageVersion>
     <DotNetFinalVersionKind Condition="'$(StabilizePackageVersion)' == 'true'">release</DotNetFinalVersionKind>
-    <DefaultNetCoreTargetFramework>net8.0</DefaultNetCoreTargetFramework>
+    <DefaultTargetFrameworks>netstandard2.1;net8.0</DefaultTargetFrameworks>
+    <DefaultTestTargetFrameworks>net6.0;net8.0</DefaultTestTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Label="Arcade settings">
     <UsingToolXliff>False</UsingToolXliff>
