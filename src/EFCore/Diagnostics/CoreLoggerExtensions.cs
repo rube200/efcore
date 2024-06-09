@@ -3376,7 +3376,7 @@ public static class CoreLoggerExtensions
             }
         }
 
-        return ValueTask.FromResult(entitiesSavedCount);
+        return new ValueTask<int>(entitiesSavedCount);
     }
 
     private static SaveChangesCompletedEventData CreateSaveChangesCompletedEventData(

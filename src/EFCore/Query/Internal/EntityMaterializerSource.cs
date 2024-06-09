@@ -1,6 +1,9 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if NETSTANDARD2_1
+using Microsoft.EntityFrameworkCore.NetStandard2._1;
+#endif
 using System.Collections.Concurrent;
 using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -479,7 +482,7 @@ public class EntityMaterializerSource : IEntityMaterializerSource
     private ConcurrentDictionary<IEntityType, Func<MaterializationContext, object>> Materializers
         => LazyInitializer.EnsureInitialized(
             ref _materializers,
-            () => new ConcurrentDictionary<IEntityType, Func<MaterializationContext, object>>());
+            () => new ConcurrentDictionary<IEntityType, Func<MaterializationContext, object>>())!;
 
     /// <summary>
     ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
@@ -510,7 +513,7 @@ public class EntityMaterializerSource : IEntityMaterializerSource
     private ConcurrentDictionary<IEntityType, Func<MaterializationContext, object>> EmptyMaterializers
         => LazyInitializer.EnsureInitialized(
             ref _emptyMaterializers,
-            () => new ConcurrentDictionary<IEntityType, Func<MaterializationContext, object>>());
+            () => new ConcurrentDictionary<IEntityType, Func<MaterializationContext, object>>())!;
 
     /// <summary>
     ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to

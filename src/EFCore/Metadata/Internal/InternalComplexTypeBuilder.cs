@@ -86,7 +86,11 @@ public class InternalComplexTypeBuilder : InternalTypeBaseBuilder, IConventionCo
     ///     any release. You should only use it directly in your code with extreme caution and knowing that
     ///     doing so can result in application failures when updating to a new Entity Framework Core release.
     /// </summary>
+#if NETSTANDARD2_1
+    public override InternalTypeBaseBuilder? Ignore(string name, ConfigurationSource configurationSource)
+#else
     public override InternalComplexTypeBuilder? Ignore(string name, ConfigurationSource configurationSource)
+#endif
     {
         var ignoredConfigurationSource = Metadata.FindIgnoredConfigurationSource(name);
         if (ignoredConfigurationSource.HasValue)
@@ -589,7 +593,11 @@ public class InternalComplexTypeBuilder : InternalTypeBaseBuilder, IConventionCo
     /// </summary>
     [DebuggerStepThrough]
     IConventionComplexTypeBuilder? IConventionComplexTypeBuilder.Ignore(string name, bool fromDataAnnotation)
+#if NETSTANDARD2_1
+        => Ignore(name, fromDataAnnotation ? ConfigurationSource.DataAnnotation : ConfigurationSource.Convention) as IConventionComplexTypeBuilder;
+#else
         => Ignore(name, fromDataAnnotation ? ConfigurationSource.DataAnnotation : ConfigurationSource.Convention);
+#endif
 
     /// <summary>
     ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to

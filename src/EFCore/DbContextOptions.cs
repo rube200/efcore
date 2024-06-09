@@ -140,11 +140,22 @@ public abstract class DbContextOptions : IDbContextOptions
     ///     <see langword="true" /> if the specified object is equal to the current object; otherwise, <see langword="false" />.
     /// </returns>
     protected virtual bool Equals(DbContextOptions other)
-        => _extensionsMap.Count == other._extensionsMap.Count
-            && _extensionsMap.Zip(other._extensionsMap)
+    {
+        if (_extensionsMap.Count != other._extensionsMap.Count)
+            return false;
+
+#if NETSTANDARD2_1
+        return _extensionsMap.Zip(other._extensionsMap, (first, second) => (first, second))
+                .All(
+                    p => p.first.Value.Ordinal == p.second.Value.Ordinal
+                        && p.first.Value.Extension.Info.ShouldUseSameServiceProvider(p.second.Value.Extension.Info));
+#else
+        return _extensionsMap.Zip(other._extensionsMap)
                 .All(
                     p => p.First.Value.Ordinal == p.Second.Value.Ordinal
                         && p.First.Value.Extension.Info.ShouldUseSameServiceProvider(p.Second.Value.Extension.Info));
+#endif
+    }
 
     /// <inheritdoc />
     public override int GetHashCode()

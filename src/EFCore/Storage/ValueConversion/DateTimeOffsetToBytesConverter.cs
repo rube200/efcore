@@ -4,7 +4,7 @@
 namespace Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 /// <summary>
-///     Converts <see cref="DateTime" /> to and from arrays of bytes.
+///     Converts <see cref="System.DateTime" /> to and from arrays of bytes.
 /// </summary>
 /// <remarks>
 ///     See <see href="https://aka.ms/efcore-docs-value-converters">EF Core value converters</see> for more information and examples.

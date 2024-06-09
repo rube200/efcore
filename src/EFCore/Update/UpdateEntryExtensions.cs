@@ -265,7 +265,11 @@ public static class UpdateEntryExtensions
                     var stringValue = value.ToString();
                     if (stringValue?.Length > 63)
                     {
+#if NETSTANDARD2_1
+                        stringValue = string.Concat(stringValue[..60], "...");
+#else
                         stringValue = string.Concat(stringValue.AsSpan(0, 60), "...");
+#endif
                     }
 
                     builder

@@ -6,7 +6,7 @@ using System.Text.Json;
 namespace Microsoft.EntityFrameworkCore.Storage.Json;
 
 /// <summary>
-///     Reads and writes JSON for <see cref="DateTime" /> values.
+///     Reads and writes JSON for <see cref="System.DateTime" /> values.
 /// </summary>
 public sealed class JsonDateTimeReaderWriter : JsonValueReaderWriter<DateTime>
 {

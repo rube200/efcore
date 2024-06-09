@@ -40,7 +40,11 @@ public class SequentialGuidValueGenerator : ValueGenerator<Guid>
         Check.DebugAssert(succeeded, "Could not write Guid to Span");
         var incrementedCounter = Interlocked.Increment(ref _counter);
         Span<byte> counterBytes = stackalloc byte[sizeof(long)];
+#if NETSTANDARD2_1
+        MemoryMarshal.Write(counterBytes, ref incrementedCounter);
+#else
         MemoryMarshal.Write(counterBytes, in incrementedCounter);
+#endif
 
         if (!BitConverter.IsLittleEndian)
         {

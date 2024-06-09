@@ -91,7 +91,7 @@ public readonly struct TypeIdentity : IEquatable<TypeIdentity>
     /// <inheritdoc />
     public bool Equals(TypeIdentity other)
         => Name == other.Name
-            && EqualityComparer<Type>.Default.Equals(Type, other.Type)
+            && EqualityComparer<Type?>.Default.Equals(Type, other.Type)
             && IsNamed == other.IsNamed;
 
     /// <inheritdoc />

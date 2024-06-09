@@ -31,7 +31,7 @@ public sealed class ExpressionEqualityComparer : IEqualityComparer<Expression?>
     public static ExpressionEqualityComparer Instance { get; } = new();
 
     /// <inheritdoc />
-    public int GetHashCode(Expression obj)
+    public int GetHashCode(Expression? obj)
     {
         if (obj == null)
         {

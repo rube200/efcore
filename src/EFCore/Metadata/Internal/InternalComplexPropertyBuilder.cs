@@ -29,7 +29,11 @@ public class InternalComplexPropertyBuilder
     ///     any release. You should only use it directly in your code with extreme caution and knowing that
     ///     doing so can result in application failures when updating to a new Entity Framework Core release.
     /// </summary>
+#if NETSTANDARD2_1
+    protected override IConventionComplexPropertyBuilder This
+#else
     protected override InternalComplexPropertyBuilder This
+#endif
         => this;
 
     /// <summary>

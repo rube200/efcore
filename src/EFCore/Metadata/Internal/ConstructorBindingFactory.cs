@@ -17,7 +17,7 @@ public class ConstructorBindingFactory : IConstructorBindingFactory
     private readonly IParameterBindingFactories _factories;
 
     private static readonly MethodInfo _createInstance =
-        typeof(Activator).GetMethod(nameof(Activator.CreateInstance), BindingFlags.Public | BindingFlags.Static, new[] { typeof(Type) })!;
+        typeof(Activator).GetMethod(nameof(Activator.CreateInstance), new[] { typeof(Type) })!;
 
     /// <summary>
     ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to

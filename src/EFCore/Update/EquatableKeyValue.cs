@@ -32,7 +32,7 @@ public sealed class EquatableKeyValue<TKey>
 
     private bool Equals(EquatableKeyValue<TKey> other)
         => other._metadata == _metadata
-            && _keyComparer.Equals(_keyValue, other._keyValue);
+            && _keyValue != null && other._keyValue != null && _keyComparer.Equals(_keyValue, other._keyValue);
 
     /// <inheritdoc />
     public override bool Equals(object? obj)

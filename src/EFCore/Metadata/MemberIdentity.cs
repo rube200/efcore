@@ -90,7 +90,7 @@ public readonly struct MemberIdentity : IEquatable<MemberIdentity>
 
     /// <inheritdoc />
     public bool Equals(MemberIdentity other)
-        => EqualityComparer<object>.Default.Equals(_nameOrMember, other._nameOrMember);
+        => EqualityComparer<object?>.Default.Equals(_nameOrMember, other._nameOrMember);
 
     /// <inheritdoc />
     public override int GetHashCode()

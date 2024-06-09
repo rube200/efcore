@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 namespace Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 /// <summary>
-///     Converts strings to and from <see cref="DateTime" /> values.
+///     Converts strings to and from <see cref="System.DateTime" /> values.
 /// </summary>
 /// <remarks>
 ///     See <see href="https://aka.ms/efcore-docs-value-converters">EF Core value converters</see> for more information and examples.

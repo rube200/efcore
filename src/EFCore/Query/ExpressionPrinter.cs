@@ -708,10 +708,10 @@ public class ExpressionPrinter : ExpressionVisitor
 
             var argumentNames
                 = !isSimpleMethodOrProperty
-                    ? extensionMethod
+                    ? (extensionMethod
                         ? method.GetParameters().Skip(1).Select(p => p.Name).ToList()
-                        : method.GetParameters().Select(p => p.Name).ToList()
-                    : new List<string?>();
+                        : method.GetParameters().Select(p => p.Name).ToList())!
+                    : new List<string>();
 
             IDisposable? indent = null;
 

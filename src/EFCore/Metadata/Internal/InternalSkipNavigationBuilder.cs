@@ -30,7 +30,11 @@ public class InternalSkipNavigationBuilder :
     ///     any release. You should only use it directly in your code with extreme caution and knowing that
     ///     doing so can result in application failures when updating to a new Entity Framework Core release.
     /// </summary>
+#if NETSTANDARD2_1
+    protected override IConventionSkipNavigationBuilder This
+#else
     protected override InternalSkipNavigationBuilder This
+#endif
         => this;
 
     /// <summary>

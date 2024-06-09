@@ -1,7 +1,9 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if !NETSTANDARD2_1
 using System.Diagnostics.CodeAnalysis;
+#endif
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
@@ -132,7 +134,11 @@ public class SimplePrincipalKeyValueFactory<TKey> : IPrincipalKeyValueFactory<TK
         public bool Equals(TKey? x, TKey? y)
             => _equals(x, y);
 
+#if NETSTANDARD2_1
+        public int GetHashCode(TKey obj)
+#else
         public int GetHashCode([DisallowNull] TKey obj)
+#endif
             => _hashCode(obj);
     }
 }

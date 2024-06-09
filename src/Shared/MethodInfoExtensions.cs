@@ -15,6 +15,10 @@ internal static class MethodInfoExtensions
                     || (t.IsGenericType
                         && t.GetGenericTypeDefinition() is Type genericType
                         && (genericType == typeof(ICollection<>)
+#if NETSTANDARD2_1
+                            || genericType == typeof(IReadOnlyCollection<>)
+#else
                             || genericType == typeof(IReadOnlySet<>)
+#endif
                             || genericType == typeof(IImmutableSet<>))));
 }
