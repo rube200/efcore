@@ -32,10 +32,6 @@ internal partial class MigrationsBundleCommand
         }
     }
 
-#if NET461
-    protected override int Execute(string[] args)
-        => throw new CommandException(Resources.VersionRequired("6.0.0"));
-#else
     protected override int Execute(string[] args)
     {
         if (new SemanticVersionComparer().Compare(EFCoreVersion, "6.0.0") < 0)
@@ -46,7 +42,7 @@ internal partial class MigrationsBundleCommand
         string context;
         using (var executor = CreateExecutor(args))
         {
-            context = (string)executor.GetContextInfo(Context!.Value())["Type"];
+            context = (string)executor.GetContextInfo(Context!.Value())["Type"]!;
         }
 
         Reporter.WriteInformation(Resources.BuildBundleStarted);
@@ -89,7 +85,7 @@ internal partial class MigrationsBundleCommand
             var globalJson = default(string);
             var nugetConfigs = new Stack<string>();
 
-            var searchPath = WorkingDir!.Value();
+            var searchPath = WorkingDir!.Value()!;
             do
             {
                 foreach (var file in Directory.EnumerateFiles(searchPath))
@@ -134,7 +130,7 @@ internal partial class MigrationsBundleCommand
 
             var runtime = _runtime!.HasValue()
                 ? _runtime!.Value()!
-                : (string)AppContext.GetData("RUNTIME_IDENTIFIER");
+                : (string)AppContext.GetData("RUNTIME_IDENTIFIER")!;
             publishArgs.Add("--runtime");
             publishArgs.Add(runtime);
 
@@ -217,5 +213,4 @@ internal partial class MigrationsBundleCommand
 
         return base.Execute(args);
     }
-#endif
 }

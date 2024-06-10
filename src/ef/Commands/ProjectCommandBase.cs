@@ -5,10 +5,6 @@ using System.IO;
 using System.Reflection;
 using Microsoft.DotNet.Cli.CommandLine;
 using Microsoft.EntityFrameworkCore.Tools.Properties;
-#if NET461
-using System;
-using System.Configuration;
-#endif
 
 namespace Microsoft.EntityFrameworkCore.Tools.Commands
 {
@@ -68,46 +64,6 @@ namespace Microsoft.EntityFrameworkCore.Tools.Commands
         {
             try
             {
-#if NET461
-                try
-                {
-                    return new AppDomainOperationExecutor(
-                        Assembly!.Value()!,
-                        StartupAssembly!.Value(),
-                        _projectDir!.Value(),
-                        _dataDir!.Value(),
-                        _rootNamespace!.Value(),
-                        _language!.Value(),
-                        _nullable!.HasValue(),
-                        remainingArguments);
-                }
-                catch (MissingMethodException) // NB: Thrown with EF Core 3.1
-                {
-                    var configurationFile = (StartupAssembly!.Value() ?? Assembly!.Value()!) + ".config";
-                    if (File.Exists(configurationFile))
-                    {
-                        AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", configurationFile);
-                        try
-                        {
-                            typeof(ConfigurationManager)
-                                .GetField("s_initState", BindingFlags.Static | BindingFlags.NonPublic)
-                                .SetValue(null, 0);
-                            typeof(ConfigurationManager)
-                                .GetField("s_configSystem", BindingFlags.Static | BindingFlags.NonPublic)
-                                .SetValue(null, null);
-                            typeof(ConfigurationManager).Assembly
-                                .GetType("System.Configuration.ClientConfigPaths")
-                                .GetField("s_current", BindingFlags.Static | BindingFlags.NonPublic)
-                                .SetValue(null, null);
-                        }
-                        catch
-                        {
-                        }
-                    }
-                }
-#elif !NETCOREAPP2_0
-#error target frameworks need to be updated.
-#endif
                 return new ReflectionOperationExecutor(
                     Assembly!.Value()!,
                     StartupAssembly!.Value(),

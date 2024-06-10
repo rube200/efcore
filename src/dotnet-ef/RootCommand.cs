@@ -102,19 +102,9 @@ internal class RootCommand : CommandBase
         var projectAssetsFile = startupProject.ProjectAssetsFile;
 
         var targetFramework = new FrameworkName(startupProject.TargetFrameworkMoniker!);
-        if (targetFramework.Identifier == ".NETFramework")
+        if (targetFramework.Identifier == ".NETCoreApp")
         {
-            executable = Path.Combine(
-                toolsPath,
-                "net461",
-                startupProject.PlatformTarget == "x86"
-                    ? "win-x86"
-                    : "any",
-                "ef.exe");
-        }
-        else if (targetFramework.Identifier == ".NETCoreApp")
-        {
-            if (targetFramework.Version < new Version(2, 0))
+            if (targetFramework.Version < new Version(6, 0))
             {
                 throw new CommandException(
                     Resources.NETCoreApp1StartupProject(startupProject.ProjectName, targetFramework.Version));
@@ -126,13 +116,7 @@ internal class RootCommand : CommandBase
             {
                 executable = Path.Combine(
                     toolsPath,
-                    "net461",
-                    startupProject.PlatformTarget switch
-                    {
-                        "x86" => "win-x86",
-                        "ARM64" => "win-arm64",
-                        _ => "any"
-                    },
+                    $"net{targetFramework.Version.ToString(2)}",
                     "ef.exe");
             }
 
@@ -166,9 +150,9 @@ internal class RootCommand : CommandBase
                 args.Add(startupProject.RuntimeFrameworkVersion);
             }
 
-            args.Add(Path.Combine(toolsPath, "netcoreapp2.0", "any", "ef.dll"));
+            args.Add(Path.Combine(toolsPath, "net8.0", "any", "ef.dll"));
         }
-        else if (targetFramework.Identifier == ".NETStandard")
+        else if (targetFramework.Identifier == ".NETStandard" || targetFramework.Identifier == ".NETFramework")
         {
             throw new CommandException(Resources.NETStandardStartupProject(startupProject.ProjectName));
         }
