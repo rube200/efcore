@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 #if NETSTANDARD2_1
-namespace System.Reflection
+namespace System.Reflection.NST
 {
     /// <summary>
     /// An enum that represents nullability state

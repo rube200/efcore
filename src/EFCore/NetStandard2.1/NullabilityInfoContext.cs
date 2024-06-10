@@ -4,7 +4,7 @@
 #if NETSTANDARD2_1
 using System.Collections.ObjectModel;
 
-namespace System.Reflection
+namespace System.Reflection.NST
 {
     /// <summary>
     /// Provides APIs for populating nullability information/context from reflection members:

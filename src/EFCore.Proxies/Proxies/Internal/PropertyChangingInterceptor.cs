@@ -2,6 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Collections;
+#if NETSTANDARD2_1
+using System.Collections.Generic.NST;
+#endif
 using System.ComponentModel;
 using Castle.DynamicProxy;
 using IInterceptor = Castle.DynamicProxy.IInterceptor;

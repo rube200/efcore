@@ -4,7 +4,7 @@
 #if NETSTANDARD2_1
 using System.Runtime.CompilerServices;
 
-namespace System.Collections.Generic
+namespace System.Collections.Generic.NST
 {
     /// <summary>
     /// An <see cref="IEqualityComparer{Object}"/> that uses reference equality (<see cref="object.ReferenceEquals(object?, object?)"/>)

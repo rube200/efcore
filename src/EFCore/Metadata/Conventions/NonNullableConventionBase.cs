@@ -2,6 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
+#if NETSTANDARD2_1
+using System.Reflection.NST;
+#endif
 
 namespace Microsoft.EntityFrameworkCore.Metadata.Conventions;
 

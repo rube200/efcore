@@ -1,6 +1,9 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if NETSTANDARD2_1
+using System.Collections.Generic.NST;
+#endif
 using JetBrains.Annotations;
 
 namespace Microsoft.EntityFrameworkCore.Metadata.Internal;
