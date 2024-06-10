@@ -2,9 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 #if NETSTANDARD2_1
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace System.Reflection
 {

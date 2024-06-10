@@ -1,11 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-
-using System.Reflection;
-#if NETSTANDARD2_1
-using Microsoft.EntityFrameworkCore.NetStandard2._1;
-#endif
 namespace Microsoft.EntityFrameworkCore.Query.Internal;
 
 /// <summary>
@@ -18,42 +13,48 @@ public class CallForwardingExpressionVisitor : ExpressionVisitor
 {
     private static readonly IReadOnlyDictionary<MethodInfo, MethodInfo> _forwardedMethods = new Dictionary<MethodInfo, MethodInfo>
     {
+#if !NETSTANDARD2_1
         {
-            typeof(byte).GetRuntimeMethod("Clamp", new[] { typeof(byte), typeof(byte), typeof(byte) })!,
+            typeof(byte).GetRuntimeMethod(nameof(byte.Clamp), new[] { typeof(byte), typeof(byte), typeof(byte) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Clamp), new[] { typeof(byte), typeof(byte), typeof(byte) })!
         },
         {
-            typeof(byte).GetRuntimeMethod("Max", new[] { typeof(byte), typeof(byte) })!,
+            typeof(byte).GetRuntimeMethod(nameof(byte.Max), new[] { typeof(byte), typeof(byte) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Max), new[] { typeof(byte), typeof(byte) })!
         },
         {
-            typeof(byte).GetRuntimeMethod("Min", new[] { typeof(byte), typeof(byte) })!,
+            typeof(byte).GetRuntimeMethod(nameof(byte.Min), new[] { typeof(byte), typeof(byte) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Min), new[] { typeof(byte), typeof(byte) })!
         },
         {
-            typeof(decimal).GetRuntimeMethod("Abs", new[] { typeof(decimal) })!,
+            typeof(decimal).GetRuntimeMethod(nameof(decimal.Abs), new[] { typeof(decimal) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Abs), new[] { typeof(decimal) })!
         },
+#endif
         {
             typeof(decimal).GetRuntimeMethod(nameof(decimal.Ceiling), new[] { typeof(decimal) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Ceiling), new[] { typeof(decimal) })!
         },
+#if !NETSTANDARD2_1
         {
-            typeof(decimal).GetRuntimeMethod("Clamp", new[] { typeof(decimal), typeof(decimal), typeof(decimal) })!,
+            typeof(decimal).GetRuntimeMethod(nameof(decimal.Clamp), new[] { typeof(decimal), typeof(decimal), typeof(decimal) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Clamp), new[] { typeof(decimal), typeof(decimal), typeof(decimal) })!
         },
+#endif
         {
             typeof(decimal).GetRuntimeMethod(nameof(decimal.Floor), new[] { typeof(decimal) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Floor), new[] { typeof(decimal) })!
         },
+#if !NETSTANDARD2_1
         {
-            typeof(decimal).GetRuntimeMethod("Max", new[] { typeof(decimal), typeof(decimal) })!,
+            typeof(decimal).GetRuntimeMethod(nameof(decimal.Max), new[] { typeof(decimal), typeof(decimal) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Max), new[] { typeof(decimal), typeof(decimal) })!
         },
         {
-            typeof(decimal).GetRuntimeMethod("Min", new[] { typeof(decimal), typeof(decimal) })!,
+            typeof(decimal).GetRuntimeMethod(nameof(decimal.Min), new[] { typeof(decimal), typeof(decimal) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Min), new[] { typeof(decimal), typeof(decimal) })!
         },
+#endif
         {
             typeof(decimal).GetRuntimeMethod(nameof(decimal.Round), new[] { typeof(decimal) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Round), new[] { typeof(decimal) })!
@@ -70,495 +71,410 @@ public class CallForwardingExpressionVisitor : ExpressionVisitor
             typeof(decimal).GetRuntimeMethod(nameof(decimal.Round), new[] { typeof(decimal), typeof(MidpointRounding) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Round), new[] { typeof(decimal), typeof(MidpointRounding) })!
         },
+#if !NETSTANDARD2_1
         {
-            typeof(decimal).GetRuntimeMethod("Sign", new[] { typeof(decimal) })!,
+            typeof(decimal).GetRuntimeMethod(nameof(decimal.Sign), new[] { typeof(decimal) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Sign), new[] { typeof(decimal) })!
         },
+#endif
         {
             typeof(decimal).GetRuntimeMethod(nameof(decimal.Truncate), new[] { typeof(decimal) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Truncate), new[] { typeof(decimal) })!
         },
+#if !NETSTANDARD2_1
         {
-            typeof(double).GetRuntimeMethod("Abs", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Abs), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Abs), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Acos", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Acos), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Acos), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Acosh", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Acosh), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Acosh), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Asin", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Asin), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Asin), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Asinh", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Asinh), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Asinh), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Atan", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Atan), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Atan), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Atan2", new[] { typeof(double), typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Atan2), new[] { typeof(double), typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Atan2), new[] { typeof(double), typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Atanh", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Atanh), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Atanh), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("BitDecrement", new[] { typeof(double) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMath).GetRuntimeMethod(nameof(MissingMath.BitDecrement), new[] { typeof(double) })!
-#else
+            typeof(double).GetRuntimeMethod(nameof(double.BitDecrement), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.BitDecrement), new[] { typeof(double) })!
-#endif
         },
         {
-            typeof(double).GetRuntimeMethod("BitIncrement", new[] { typeof(double) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMath).GetRuntimeMethod(nameof(MissingMath.BitIncrement), new[] { typeof(double) })!
-#else
+            typeof(double).GetRuntimeMethod(nameof(double.BitIncrement), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.BitIncrement), new[] { typeof(double) })!
-#endif
         },
         {
-            typeof(double).GetRuntimeMethod("Cbrt", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Cbrt), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Cbrt), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Ceiling", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Ceiling), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Ceiling), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Clamp", new[] { typeof(double), typeof(double), typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Clamp), new[] { typeof(double), typeof(double), typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Clamp), new[] { typeof(double), typeof(double), typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("CopySign", new[] { typeof(double), typeof(double) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMath).GetRuntimeMethod(nameof(MissingMath.CopySign), new[] { typeof(double), typeof(double) })!
-#else
+            typeof(double).GetRuntimeMethod(nameof(double.CopySign), new[] { typeof(double), typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.CopySign), new[] { typeof(double), typeof(double) })!
-#endif
         },
         {
-            typeof(double).GetRuntimeMethod("Cos", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Cos), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Cos), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Cosh", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Cosh), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Cosh), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Exp", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Exp), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Exp), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Floor", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Floor), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Floor), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("FusedMultiplyAdd", new[] { typeof(double), typeof(double), typeof(double) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMath).GetRuntimeMethod(nameof(MissingMath.FusedMultiplyAdd), new[] { typeof(double), typeof(double), typeof(double) })!
-#else
+            typeof(double).GetRuntimeMethod(nameof(double.FusedMultiplyAdd), new[] { typeof(double), typeof(double), typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.FusedMultiplyAdd), new[] { typeof(double), typeof(double), typeof(double) })!
-#endif
         },
         {
-            typeof(double).GetRuntimeMethod("Ieee754Remainder", new[] { typeof(double), typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Ieee754Remainder), new[] { typeof(double), typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.IEEERemainder), new[] { typeof(double), typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("ILogB", new[] { typeof(double) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMath).GetRuntimeMethod(nameof(MissingMath.ILogB), new[] { typeof(double) })!
-#else
+            typeof(double).GetRuntimeMethod(nameof(double.ILogB), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.ILogB), new[] { typeof(double) })!
-#endif
         },
         {
-            typeof(double).GetRuntimeMethod("Log", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Log), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Log), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Log", new[] { typeof(double), typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Log), new[] { typeof(double), typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Log), new[] { typeof(double), typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Log10", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Log10), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Log10), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Log2", new[] { typeof(double) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMath).GetRuntimeMethod(nameof(MissingMath.Log2), new[] { typeof(double) })!
-#else
+            typeof(double).GetRuntimeMethod(nameof(double.Log2), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Log2), new[] { typeof(double) })!
-#endif
         },
         {
-            typeof(double).GetRuntimeMethod("Max", new[] { typeof(double), typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Max), new[] { typeof(double), typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Max), new[] { typeof(double), typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("MaxMagnitude", new[] { typeof(double), typeof(double) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMath).GetRuntimeMethod(nameof(MissingMath.MaxMagnitude), new[] { typeof(double), typeof(double) })!
-#else
+            typeof(double).GetRuntimeMethod(nameof(double.MaxMagnitude), new[] { typeof(double), typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.MaxMagnitude), new[] { typeof(double), typeof(double) })!
-#endif
         },
         {
-            typeof(double).GetRuntimeMethod("Min", new[] { typeof(double), typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Min), new[] { typeof(double), typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Min), new[] { typeof(double), typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("MinMagnitude", new[] { typeof(double), typeof(double) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMath).GetRuntimeMethod(nameof(MissingMath.MinMagnitude), new[] { typeof(double), typeof(double) })!
-#else
+            typeof(double).GetRuntimeMethod(nameof(double.MinMagnitude), new[] { typeof(double), typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.MinMagnitude), new[] { typeof(double), typeof(double) })!
-#endif
         },
         {
-            typeof(double).GetRuntimeMethod("Pow", new[] { typeof(double), typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Pow), new[] { typeof(double), typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Pow), new[] { typeof(double), typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("ReciprocalEstimate", new[] { typeof(double) })!,
-            
-#if NETSTANDARD2_1
-            typeof(MissingMath).GetRuntimeMethod(nameof(MissingMath.ReciprocalEstimate), new[] { typeof(double) })!
-#else
+            typeof(double).GetRuntimeMethod(nameof(double.ReciprocalEstimate), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.ReciprocalEstimate), new[] { typeof(double) })!
-#endif
         },
         {
-            typeof(double).GetRuntimeMethod("ReciprocalSqrtEstimate", new[] { typeof(double) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMath).GetRuntimeMethod(nameof(MissingMath.ReciprocalSqrtEstimate), new[] { typeof(double) })!
-#else
+            typeof(double).GetRuntimeMethod(nameof(double.ReciprocalSqrtEstimate), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.ReciprocalSqrtEstimate), new[] { typeof(double) })!
-#endif
         },
         {
-            typeof(double).GetRuntimeMethod("Round", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Round), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Round), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Round", new[] { typeof(double), typeof(int) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Round), new[] { typeof(double), typeof(int) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Round), new[] { typeof(double), typeof(int) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Round", new[] { typeof(double), typeof(int), typeof(MidpointRounding) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Round), new[] { typeof(double), typeof(int), typeof(MidpointRounding) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Round), new[] { typeof(double), typeof(int), typeof(MidpointRounding) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Round", new[] { typeof(double), typeof(MidpointRounding) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Round), new[] { typeof(double), typeof(MidpointRounding) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Round), new[] { typeof(double), typeof(MidpointRounding) })!
         },
         {
-            typeof(double).GetRuntimeMethod("ScaleB", new[] { typeof(double), typeof(int) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMath).GetRuntimeMethod(nameof(MissingMath.ScaleB), new[] { typeof(double), typeof(int) })!
-#else
+            typeof(double).GetRuntimeMethod(nameof(double.ScaleB), new[] { typeof(double), typeof(int) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.ScaleB), new[] { typeof(double), typeof(int) })!
-#endif
         },
         {
-            typeof(double).GetRuntimeMethod("Sign", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Sign), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Sign), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Sin", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Sin), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Sin), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Sinh", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Sinh), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Sinh), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Sqrt", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Sqrt), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Sqrt), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Tan", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Tan), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Tan), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Tanh", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Tanh), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Tanh), new[] { typeof(double) })!
         },
         {
-            typeof(double).GetRuntimeMethod("Truncate", new[] { typeof(double) })!,
+            typeof(double).GetRuntimeMethod(nameof(double.Truncate), new[] { typeof(double) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Truncate), new[] { typeof(double) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Abs", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Abs), new[] { typeof(float) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Abs), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Acos", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Acos), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Acos), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Acosh", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Acosh), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Acosh), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Asin", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Asin), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Asin), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Asinh", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Asinh), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Asinh), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Atan", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Atan), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Atan), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Atan2", new[] { typeof(float), typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Atan2), new[] { typeof(float), typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Atan2), new[] { typeof(float), typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Atanh", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Atanh), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Atanh), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("BitDecrement", new[] { typeof(float) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMathF).GetRuntimeMethod(nameof(MissingMathF.BitDecrement), new[] { typeof(float) })!
-#else
+            typeof(float).GetRuntimeMethod(nameof(float.BitDecrement), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.BitDecrement), new[] { typeof(float) })!
-#endif
         },
         {
-            typeof(float).GetRuntimeMethod("BitIncrement", new[] { typeof(float) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMathF).GetRuntimeMethod(nameof(MissingMathF.BitIncrement), new[] { typeof(float) })!
-#else
+            typeof(float).GetRuntimeMethod(nameof(float.BitIncrement), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.BitIncrement), new[] { typeof(float) })!
-#endif
         },
         {
-            typeof(float).GetRuntimeMethod("Cbrt", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Cbrt), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Cbrt), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Ceiling", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Ceiling), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Ceiling), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Clamp", new[] { typeof(float), typeof(float), typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Clamp), new[] { typeof(float), typeof(float), typeof(float) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Clamp), new[] { typeof(float), typeof(float), typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("CopySign", new[] { typeof(float), typeof(float) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMathF).GetRuntimeMethod(nameof(MissingMathF.CopySign), new[] { typeof(float), typeof(float) })!
-#else
+            typeof(float).GetRuntimeMethod(nameof(float.CopySign), new[] { typeof(float), typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.CopySign), new[] { typeof(float), typeof(float) })!
-#endif
         },
         {
-            typeof(float).GetRuntimeMethod("Cos", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Cos), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Cos), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Cosh", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Cosh), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Cosh), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Exp", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Exp), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Exp), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Floor", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Floor), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Floor), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("FusedMultiplyAdd", new[] { typeof(float), typeof(float), typeof(float) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMathF).GetRuntimeMethod(nameof(MissingMathF.FusedMultiplyAdd), new[] { typeof(float), typeof(float), typeof(float) })!
-#else
+            typeof(float).GetRuntimeMethod(nameof(float.FusedMultiplyAdd), new[] { typeof(float), typeof(float), typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.FusedMultiplyAdd), new[] { typeof(float), typeof(float), typeof(float) })!
-#endif
         },
         {
-            typeof(float).GetRuntimeMethod("Ieee754Remainder", new[] { typeof(float), typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Ieee754Remainder), new[] { typeof(float), typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.IEEERemainder), new[] { typeof(float), typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("ILogB", new[] { typeof(float) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMathF).GetRuntimeMethod(nameof(MissingMathF.ILogB), new[] { typeof(float) })!
-#else
+            typeof(float).GetRuntimeMethod(nameof(float.ILogB), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.ILogB), new[] { typeof(float) })!
-#endif
         },
         {
-            typeof(float).GetRuntimeMethod("Log", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Log), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Log), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Log", new[] { typeof(float), typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Log), new[] { typeof(float), typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Log), new[] { typeof(float), typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Log10", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Log10), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Log10), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Log2", new[] { typeof(float) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMathF).GetRuntimeMethod(nameof(MissingMathF.Log2), new[] { typeof(float) })!
-#else
+            typeof(float).GetRuntimeMethod(nameof(float.Log2), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Log2), new[] { typeof(float) })!
-#endif
         },
         {
-            typeof(float).GetRuntimeMethod("Max", new[] { typeof(float), typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Max), new[] { typeof(float), typeof(float) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Max), new[] { typeof(float), typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("MaxMagnitude", new[] { typeof(float), typeof(float) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMathF).GetRuntimeMethod(nameof(MissingMathF.MaxMagnitude), new[] { typeof(float), typeof(float) })!
-#else
+            typeof(float).GetRuntimeMethod(nameof(float.MaxMagnitude), new[] { typeof(float), typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.MaxMagnitude), new[] { typeof(float), typeof(float) })!
-#endif
         },
         {
-            typeof(float).GetRuntimeMethod("Min", new[] { typeof(float), typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Min), new[] { typeof(float), typeof(float) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Min), new[] { typeof(float), typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("MinMagnitude", new[] { typeof(float), typeof(float) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMathF).GetRuntimeMethod(nameof(MissingMathF.MinMagnitude), new[] { typeof(float), typeof(float) })!
-#else
+            typeof(float).GetRuntimeMethod(nameof(float.MinMagnitude), new[] { typeof(float), typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.MinMagnitude), new[] { typeof(float), typeof(float) })!
-#endif
         },
         {
-            typeof(float).GetRuntimeMethod("Pow", new[] { typeof(float), typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Pow), new[] { typeof(float), typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Pow), new[] { typeof(float), typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("ReciprocalEstimate", new[] { typeof(float) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMathF).GetRuntimeMethod(nameof(MissingMathF.ReciprocalEstimate), new[] { typeof(float) })!
-#else
+            typeof(float).GetRuntimeMethod(nameof(float.ReciprocalEstimate), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.ReciprocalEstimate), new[] { typeof(float) })!
-#endif
         },
         {
-            typeof(float).GetRuntimeMethod("ReciprocalSqrtEstimate", new[] { typeof(float) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMathF).GetRuntimeMethod(nameof(MissingMathF.ReciprocalSqrtEstimate), new[] { typeof(float) })!
-#else
+            typeof(float).GetRuntimeMethod(nameof(float.ReciprocalSqrtEstimate), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.ReciprocalSqrtEstimate), new[] { typeof(float) })!
-#endif
         },
         {
-            typeof(float).GetRuntimeMethod("Round", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Round), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Round), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Round", new[] { typeof(float), typeof(int) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Round), new[] { typeof(float), typeof(int) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Round), new[] { typeof(float), typeof(int) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Round", new[] { typeof(float), typeof(int), typeof(MidpointRounding) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Round), new[] { typeof(float), typeof(int), typeof(MidpointRounding) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Round), new[] { typeof(float), typeof(int), typeof(MidpointRounding) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Round", new[] { typeof(float), typeof(MidpointRounding) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Round), new[] { typeof(float), typeof(MidpointRounding) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Round), new[] { typeof(float), typeof(MidpointRounding) })!
         },
         {
-            typeof(float).GetRuntimeMethod("ScaleB", new[] { typeof(float), typeof(int) })!,
-#if NETSTANDARD2_1
-            typeof(MissingMathF).GetRuntimeMethod(nameof(MissingMathF.ScaleB), new[] { typeof(float), typeof(float) })!
-#else
-            typeof(MathF).GetRuntimeMethod(nameof(MathF.ScaleB), new[] { typeof(float), typeof(float) })!
-#endif
+            typeof(float).GetRuntimeMethod(nameof(float.ScaleB), new[] { typeof(float), typeof(int) })!,
+            typeof(MathF).GetRuntimeMethod(nameof(MathF.ScaleB), new[] { typeof(float), typeof(int) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Sign", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Sign), new[] { typeof(float) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Sign), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Sin", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Sin), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Sin), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Sinh", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Sinh), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Sinh), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Sqrt", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Sqrt), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Sqrt), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Tan", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Tan), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Tan), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Tanh", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Tanh), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Tanh), new[] { typeof(float) })!
         },
         {
-            typeof(float).GetRuntimeMethod("Truncate", new[] { typeof(float) })!,
+            typeof(float).GetRuntimeMethod(nameof(float.Truncate), new[] { typeof(float) })!,
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Truncate), new[] { typeof(float) })!
         },
         {
-            typeof(int).GetRuntimeMethod("Abs", new[] { typeof(int) })!,
+            typeof(int).GetRuntimeMethod(nameof(int.Abs), new[] { typeof(int) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Abs), new[] { typeof(int) })!
         },
         {
-            typeof(int).GetRuntimeMethod("Clamp", new[] { typeof(int), typeof(int), typeof(int) })!,
+            typeof(int).GetRuntimeMethod(nameof(int.Clamp), new[] { typeof(int), typeof(int), typeof(int) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Clamp), new[] { typeof(int), typeof(int), typeof(int) })!
         },
         {
-            typeof(int).GetRuntimeMethod("Max", new[] { typeof(int), typeof(int) })!,
+            typeof(int).GetRuntimeMethod(nameof(int.Max), new[] { typeof(int), typeof(int) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Max), new[] { typeof(int), typeof(int) })!
         },
         {
-            typeof(int).GetRuntimeMethod("Min", new[] { typeof(int), typeof(int) })!,
+            typeof(int).GetRuntimeMethod(nameof(int.Min), new[] { typeof(int), typeof(int) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Min), new[] { typeof(int), typeof(int) })!
         },
         {
-            typeof(int).GetRuntimeMethod("Sign", new[] { typeof(int) })!,
+            typeof(int).GetRuntimeMethod(nameof(int.Sign), new[] { typeof(int) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Sign), new[] { typeof(int) })!
         },
         {
-            typeof(long).GetRuntimeMethod("Abs", new[] { typeof(long) })!,
+            typeof(long).GetRuntimeMethod(nameof(long.Abs), new[] { typeof(long) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Abs), new[] { typeof(long) })!
         },
         {
-            typeof(long).GetRuntimeMethod("Clamp", new[] { typeof(long), typeof(long), typeof(long) })!,
+            typeof(long).GetRuntimeMethod(nameof(long.Clamp), new[] { typeof(long), typeof(long), typeof(long) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Clamp), new[] { typeof(long), typeof(long), typeof(long) })!
         },
         {
-            typeof(long).GetRuntimeMethod("Max", new[] { typeof(long), typeof(long) })!,
+            typeof(long).GetRuntimeMethod(nameof(long.Max), new[] { typeof(long), typeof(long) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Max), new[] { typeof(long), typeof(long) })!
         },
         {
-            typeof(long).GetRuntimeMethod("Min", new[] { typeof(long), typeof(long) })!,
+            typeof(long).GetRuntimeMethod(nameof(long.Min), new[] { typeof(long), typeof(long) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Min), new[] { typeof(long), typeof(long) })!
         },
         {
-            typeof(long).GetRuntimeMethod("Sign", new[] { typeof(long) })!,
+            typeof(long).GetRuntimeMethod(nameof(long.Sign), new[] { typeof(long) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Sign), new[] { typeof(long) })!
         },
+#endif
         {
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Abs), new[] { typeof(float) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Abs), new[] { typeof(float) })!
@@ -575,82 +491,84 @@ public class CallForwardingExpressionVisitor : ExpressionVisitor
             typeof(MathF).GetRuntimeMethod(nameof(MathF.Sign), new[] { typeof(float) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Sign), new[] { typeof(float) })!
         },
+#if !NETSTANDARD2_1
         {
-            typeof(sbyte).GetRuntimeMethod("Abs", new[] { typeof(sbyte) })!,
+            typeof(sbyte).GetRuntimeMethod(nameof(sbyte.Abs), new[] { typeof(sbyte) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Abs), new[] { typeof(sbyte) })!
         },
         {
-            typeof(sbyte).GetRuntimeMethod("Clamp", new[] { typeof(sbyte), typeof(sbyte), typeof(sbyte) })!,
+            typeof(sbyte).GetRuntimeMethod(nameof(sbyte.Clamp), new[] { typeof(sbyte), typeof(sbyte), typeof(sbyte) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Clamp), new[] { typeof(sbyte), typeof(sbyte), typeof(sbyte) })!
         },
         {
-            typeof(sbyte).GetRuntimeMethod("Max", new[] { typeof(sbyte), typeof(sbyte) })!,
+            typeof(sbyte).GetRuntimeMethod(nameof(sbyte.Max), new[] { typeof(sbyte), typeof(sbyte) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Max), new[] { typeof(sbyte), typeof(sbyte) })!
         },
         {
-            typeof(sbyte).GetRuntimeMethod("Min", new[] { typeof(sbyte), typeof(sbyte) })!,
+            typeof(sbyte).GetRuntimeMethod(nameof(sbyte.Min), new[] { typeof(sbyte), typeof(sbyte) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Min), new[] { typeof(sbyte), typeof(sbyte) })!
         },
         {
-            typeof(sbyte).GetRuntimeMethod("Sign", new[] { typeof(sbyte) })!,
+            typeof(sbyte).GetRuntimeMethod(nameof(sbyte.Sign), new[] { typeof(sbyte) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Sign), new[] { typeof(sbyte) })!
         },
         {
-            typeof(short).GetRuntimeMethod("Abs", new[] { typeof(short) })!,
+            typeof(short).GetRuntimeMethod(nameof(short.Abs), new[] { typeof(short) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Abs), new[] { typeof(short) })!
         },
         {
-            typeof(short).GetRuntimeMethod("Clamp", new[] { typeof(short), typeof(short), typeof(short) })!,
+            typeof(short).GetRuntimeMethod(nameof(short.Clamp), new[] { typeof(short), typeof(short), typeof(short) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Clamp), new[] { typeof(short), typeof(short), typeof(short) })!
         },
         {
-            typeof(short).GetRuntimeMethod("Max", new[] { typeof(short), typeof(short) })!,
+            typeof(short).GetRuntimeMethod(nameof(short.Max), new[] { typeof(short), typeof(short) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Max), new[] { typeof(short), typeof(short) })!
         },
         {
-            typeof(short).GetRuntimeMethod("Min", new[] { typeof(short), typeof(short) })!,
+            typeof(short).GetRuntimeMethod(nameof(short.Min), new[] { typeof(short), typeof(short) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Min), new[] { typeof(short), typeof(short) })!
         },
         {
-            typeof(short).GetRuntimeMethod("Sign", new[] { typeof(short) })!,
+            typeof(short).GetRuntimeMethod(nameof(short.Sign), new[] { typeof(short) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Sign), new[] { typeof(short) })!
         },
         {
-            typeof(uint).GetRuntimeMethod("Clamp", new[] { typeof(uint), typeof(uint), typeof(uint) })!,
+            typeof(uint).GetRuntimeMethod(nameof(uint.Clamp), new[] { typeof(uint), typeof(uint), typeof(uint) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Clamp), new[] { typeof(uint), typeof(uint), typeof(uint) })!
         },
         {
-            typeof(uint).GetRuntimeMethod("Max", new[] { typeof(uint), typeof(uint) })!,
+            typeof(uint).GetRuntimeMethod(nameof(uint.Max), new[] { typeof(uint), typeof(uint) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Max), new[] { typeof(uint), typeof(uint) })!
         },
         {
-            typeof(uint).GetRuntimeMethod("Min", new[] { typeof(uint), typeof(uint) })!,
+            typeof(uint).GetRuntimeMethod(nameof(uint.Min), new[] { typeof(uint), typeof(uint) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Min), new[] { typeof(uint), typeof(uint) })!
         },
         {
-            typeof(ulong).GetRuntimeMethod("Clamp", new[] { typeof(ulong), typeof(ulong), typeof(ulong) })!,
+            typeof(ulong).GetRuntimeMethod(nameof(ulong.Clamp), new[] { typeof(ulong), typeof(ulong), typeof(ulong) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Clamp), new[] { typeof(ulong), typeof(ulong), typeof(ulong) })!
         },
         {
-            typeof(ulong).GetRuntimeMethod("Max", new[] { typeof(ulong), typeof(ulong) })!,
+            typeof(ulong).GetRuntimeMethod(nameof(ulong.Max), new[] { typeof(ulong), typeof(ulong) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Max), new[] { typeof(ulong), typeof(ulong) })!
         },
         {
-            typeof(ulong).GetRuntimeMethod("Min", new[] { typeof(ulong), typeof(ulong) })!,
+            typeof(ulong).GetRuntimeMethod(nameof(ulong.Min), new[] { typeof(ulong), typeof(ulong) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Min), new[] { typeof(ulong), typeof(ulong) })!
         },
         {
-            typeof(ushort).GetRuntimeMethod("Clamp", new[] { typeof(ushort), typeof(ushort), typeof(ushort) })!,
+            typeof(ushort).GetRuntimeMethod(nameof(ushort.Clamp), new[] { typeof(ushort), typeof(ushort), typeof(ushort) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Clamp), new[] { typeof(ushort), typeof(ushort), typeof(ushort) })!
         },
         {
-            typeof(ushort).GetRuntimeMethod("Max", new[] { typeof(ushort), typeof(ushort) })!,
+            typeof(ushort).GetRuntimeMethod(nameof(ushort.Max), new[] { typeof(ushort), typeof(ushort) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Max), new[] { typeof(ushort), typeof(ushort) })!
         },
         {
-            typeof(ushort).GetRuntimeMethod("Min", new[] { typeof(ushort), typeof(ushort) })!,
+            typeof(ushort).GetRuntimeMethod(nameof(ushort.Min), new[] { typeof(ushort), typeof(ushort) })!,
             typeof(Math).GetRuntimeMethod(nameof(Math.Min), new[] { typeof(ushort), typeof(ushort) })!
         }
+#endif
     };
 
     /// <summary>
