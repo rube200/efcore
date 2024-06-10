@@ -424,7 +424,9 @@ public abstract class RelationalTypeMappingTest
 
         Test_GenerateSqlLiteral_helper(typeMapping, new TimeOnly(13, 10, 15), "TIME '13:10:15'");
         Test_GenerateSqlLiteral_helper(typeMapping, new TimeOnly(13, 10, 15, 120), "TIME '13:10:15.12'");
+#if NET7_0_OR_GREATER
         Test_GenerateSqlLiteral_helper(typeMapping, new TimeOnly(13, 10, 15, 120, 20), "TIME '13:10:15.12002'");
+#endif
     }
 
     [ConditionalFact]

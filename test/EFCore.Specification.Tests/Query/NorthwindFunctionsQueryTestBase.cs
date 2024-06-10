@@ -1033,6 +1033,7 @@ public abstract class NorthwindFunctionsQueryTestBase<TFixture> : QueryTestBase<
             ss => ss.Set<OrderDetail>().Where(od => od.OrderID == 11077)
                 .Where(od => Math.Min(od.OrderID, od.ProductID) == od.ProductID));
 
+#if NET8_0_OR_GREATER
     [ConditionalTheory]
     [MemberData(nameof(IsAsyncData))]
     public virtual Task Where_math_degrees(bool async)
@@ -1046,6 +1047,7 @@ public abstract class NorthwindFunctionsQueryTestBase<TFixture> : QueryTestBase<
         => AssertQuery(
             async,
             ss => ss.Set<OrderDetail>().Where(od => od.OrderID == 11077).Where(od => double.DegreesToRadians(od.Discount) > 0));
+#endif
 
     [ConditionalTheory]
     [MemberData(nameof(IsAsyncData))]
@@ -1221,6 +1223,7 @@ public abstract class NorthwindFunctionsQueryTestBase<TFixture> : QueryTestBase<
             async,
             ss => ss.Set<OrderDetail>().Where(od => od.OrderID == 11077).Where(od => MathF.Sign(od.Discount) > 0));
 
+#if NET8_0_OR_GREATER
     [ConditionalTheory]
     [MemberData(nameof(IsAsyncData))]
     public virtual Task Where_mathf_degrees(bool async)
@@ -1234,6 +1237,7 @@ public abstract class NorthwindFunctionsQueryTestBase<TFixture> : QueryTestBase<
         => AssertQuery(
             async,
             ss => ss.Set<OrderDetail>().Where(od => od.OrderID == 11077).Where(od => float.DegreesToRadians(od.Discount) > 0));
+#endif
 
     [ConditionalTheory]
     [MemberData(nameof(IsAsyncData))]

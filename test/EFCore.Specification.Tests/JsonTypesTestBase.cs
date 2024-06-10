@@ -704,7 +704,12 @@ public abstract class JsonTypesTestBase
     public virtual void Can_read_write_nullable_GUID_JSON_values(string? value, string json)
         => Can_read_and_write_JSON_value<NullableGuidType, Guid?>(
             nameof(NullableGuidType.Guid),
-            value == null ? null : Guid.Parse(value, CultureInfo.InvariantCulture), json);
+            value == null ? null :
+#if !NET7_0_OR_GREATER
+            Guid.Parse(value), json);
+#else
+            Guid.Parse(value, CultureInfo.InvariantCulture), json);
+#endif
 
     protected class NullableGuidType
     {
@@ -1125,7 +1130,12 @@ public abstract class JsonTypesTestBase
         => Can_read_and_write_JSON_property_value<NullableGuidType, Guid?>(
             b => b.HasConversion<string>(),
             nameof(NullableGuidType.Guid),
-            value == null ? default(Guid?) : Guid.Parse(value, CultureInfo.InvariantCulture), json);
+            value == null ? default(Guid?) :
+#if !NET7_0_OR_GREATER
+            Guid.Parse(value), json);
+#else
+            Guid.Parse(value, CultureInfo.InvariantCulture), json);
+#endif
 
     [ConditionalTheory]
     [InlineData("MinValue", """{"Prop":"MinValue"}""")]
@@ -1957,10 +1967,18 @@ public abstract class JsonTypesTestBase
             new List<TimeOnly>
             {
                 TimeOnly.MinValue,
+#if !NET7_0_OR_GREATER
+                new(11, 5, 2, 3),
+#else
                 new(11, 5, 2, 3, 4),
+#endif
                 TimeOnly.MaxValue
             },
+#if !NET7_0_OR_GREATER
+            """{"Prop":["00:00:00.0000000","11:05:02.0030000","23:59:59.9999999"]}""",
+#else
             """{"Prop":["00:00:00.0000000","11:05:02.0030040","23:59:59.9999999"]}""",
+#endif
             mappedCollection: true,
             new List<TimeOnly>());
 
@@ -2566,10 +2584,18 @@ public abstract class JsonTypesTestBase
             {
                 null,
                 TimeOnly.MinValue,
+#if !NET7_0_OR_GREATER
+                new(11, 5, 2, 3),
+#else
                 new(11, 5, 2, 3, 4),
+#endif
                 TimeOnly.MaxValue
             },
+#if !NET7_0_OR_GREATER
+            """{"Prop":[null,"00:00:00.0000000","11:05:02.0030000","23:59:59.9999999"]}""",
+#else
             """{"Prop":[null,"00:00:00.0000000","11:05:02.0030040","23:59:59.9999999"]}""",
+#endif
             mappedCollection: true);
 
     protected class NullableTimeOnlyCollectionType

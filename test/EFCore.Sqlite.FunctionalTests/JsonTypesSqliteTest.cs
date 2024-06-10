@@ -264,7 +264,12 @@ public class JsonTypesSqliteTest : JsonTypesRelationalTestBase
     public virtual void Can_read_write_nullable_GUID_JSON_values_sqlite(string? value, string json)
         => Can_read_and_write_JSON_value<NullableGuidType, Guid?>(
             nameof(NullableGuidType.Guid),
-            value == null ? null : Guid.Parse(value, CultureInfo.InvariantCulture), json);
+            value == null ? null :
+#if !NET7_0_OR_GREATER
+            Guid.Parse(value), json);
+#else
+            Guid.Parse(value, CultureInfo.InvariantCulture), json);
+#endif
 
     [ConditionalFact]
     public override void Can_read_write_collection_of_nullable_binary_JSON_values()

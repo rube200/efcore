@@ -430,6 +430,7 @@ WHERE "o"."OrderID" = 11077 AND tanh(CAST("o"."Discount" AS REAL)) > 0.0
     public override Task Where_math_truncate(bool async)
         => AssertTranslationFailed(() => base.Where_math_truncate(async));
 
+#if NET8_0_OR_GREATER
     public override async Task Where_math_degrees(bool async)
     {
         await base.Where_math_degrees(async);
@@ -453,6 +454,7 @@ FROM "Order Details" AS "o"
 WHERE "o"."OrderID" = 11077 AND radians(CAST("o"."Discount" AS REAL)) > 0.0
 """);
     }
+#endif
 
     public override async Task Where_mathf_acos(bool async)
     {
@@ -670,6 +672,7 @@ WHERE "o"."Quantity" < 5 AND trunc(CAST("o"."UnitPrice" AS REAL)) > 10
 """);
     }
 
+#if NET8_0_OR_GREATER
     public override async Task Where_mathf_degrees(bool async)
     {
         await base.Where_mathf_degrees(async);
@@ -693,6 +696,7 @@ FROM "Order Details" AS "o"
 WHERE "o"."OrderID" = 11077 AND radians("o"."Discount") > 0
 """);
     }
+#endif
 
     public override async Task String_StartsWith_Literal(bool async)
     {

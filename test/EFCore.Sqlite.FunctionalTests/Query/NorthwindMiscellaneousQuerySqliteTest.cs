@@ -115,7 +115,9 @@ WHERE "o"."OrderDate" IS NOT NULL
                     Assert.Equal(0, diff.Minutes);
                     Assert.Equal(0, diff.Seconds);
                     Assert.Equal(0, diff.Milliseconds);
+#if NET8_0_OR_GREATER
                     Assert.Equal(0, diff.Microseconds);
+#endif
                 }
             });
 

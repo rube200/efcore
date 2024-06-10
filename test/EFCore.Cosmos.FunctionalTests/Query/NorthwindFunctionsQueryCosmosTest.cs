@@ -601,6 +601,7 @@ WHERE (((c["Discriminator"] = "OrderDetail") AND (c["OrderID"] = 11077)) AND (SI
         AssertSql();
     }
 
+#if NET8_0_OR_GREATER
     public override async Task Where_math_degrees(bool async)
     {
         // Cosmos client evaluation. Issue #17246.
@@ -616,6 +617,7 @@ WHERE (((c["Discriminator"] = "OrderDetail") AND (c["OrderID"] = 11077)) AND (SI
 
         AssertSql();
     }
+#endif
 
     public override async Task Where_mathf_abs1(bool async)
     {
@@ -841,6 +843,7 @@ WHERE (((c["Discriminator"] = "OrderDetail") AND (c["OrderID"] = 11077)) AND (SI
 """);
     }
 
+#if NET8_0_OR_GREATER
     public override async Task Where_mathf_degrees(bool async)
     {
         await base.Where_mathf_degrees(async);
@@ -864,6 +867,7 @@ FROM root c
 WHERE (((c["Discriminator"] = "OrderDetail") AND (c["OrderID"] = 11077)) AND (RADIANS(c["Discount"]) > 0.0))
 """);
     }
+#endif
 
     public override async Task Where_guid_newguid(bool async)
     {

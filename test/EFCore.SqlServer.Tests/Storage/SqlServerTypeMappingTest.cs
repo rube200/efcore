@@ -180,9 +180,9 @@ public class SqlServerTypeMappingTest : RelationalTypeMappingTest
     }
 
     public static RelationalTypeMapping GetMapping(Type type)
-        => new SqlServerTypeMappingSource(
+        => ((IRelationalTypeMappingSource)new SqlServerTypeMappingSource(
                 TestServiceFactory.Instance.Create<TypeMappingSourceDependencies>(),
-                TestServiceFactory.Instance.Create<RelationalTypeMappingSourceDependencies>())
+                TestServiceFactory.Instance.Create<RelationalTypeMappingSourceDependencies>()))
             .FindMapping(type);
 
     public override void ByteArray_literal_generated_correctly()
@@ -216,7 +216,9 @@ public class SqlServerTypeMappingTest : RelationalTypeMappingTest
 
         Test_GenerateSqlLiteral_helper(typeMapping, new TimeOnly(13, 10, 15), "'13:10:15'");
         Test_GenerateSqlLiteral_helper(typeMapping, new TimeOnly(13, 10, 15, 120), "'13:10:15.12'");
+#if NET7_0_OR_GREATER
         Test_GenerateSqlLiteral_helper(typeMapping, new TimeOnly(13, 10, 15, 120, 20), "'13:10:15.12002'");
+#endif
     }
 
     [ConditionalFact]
@@ -241,7 +243,11 @@ public class SqlServerTypeMappingTest : RelationalTypeMappingTest
 
         Test_GenerateSqlLiteral_helper(
             GetMapping(typeof(TimeSpan)),
+#if !NET7_0_OR_GREATER
+            new TimeSpan(0, 13, 10, 15, 120),
+#else
             new TimeSpan(0, 13, 10, 15, 120, 20),
+#endif
             "'13:10:15.12002'");
     }
 

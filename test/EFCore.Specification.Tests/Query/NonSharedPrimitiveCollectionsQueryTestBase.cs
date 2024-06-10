@@ -51,7 +51,11 @@ public abstract class NonSharedPrimitiveCollectionsQueryTestBase : NonSharedMode
 
     [ConditionalFact]
     public virtual Task Array_of_DateTime_with_microseconds()
+#if !NET7_0_OR_GREATER
+        => TestArray(new DateTime(2023, 1, 1, 12, 30, 0, 123), new DateTime(2023, 1, 1, 12, 30, 0, 123));
+#else
         => TestArray(new DateTime(2023, 1, 1, 12, 30, 0, 123, 456), new DateTime(2023, 1, 1, 12, 30, 0, 123, 457));
+#endif
 
     [ConditionalFact]
     public virtual Task Array_of_DateOnly()
@@ -67,7 +71,11 @@ public abstract class NonSharedPrimitiveCollectionsQueryTestBase : NonSharedMode
 
     [ConditionalFact]
     public virtual Task Array_of_TimeOnly_with_microseconds()
+#if !NET7_0_OR_GREATER
+        => TestArray(new TimeOnly(12, 30, 0, 123), new TimeOnly(12, 30, 0, 124));
+#else
         => TestArray(new TimeOnly(12, 30, 0, 123, 456), new TimeOnly(12, 30, 0, 124, 457));
+#endif
 
     [ConditionalFact]
     public virtual Task Array_of_DateTimeOffset()
@@ -111,7 +119,7 @@ public abstract class NonSharedPrimitiveCollectionsQueryTestBase : NonSharedMode
         Assert.Equal(CoreStrings.PropertyNotMapped("int[,]", "TestEntity", "MultidimensionalArray"), exception.Message);
     }
 
-    #endregion Support for specific element types
+#endregion Support for specific element types
 
     [ConditionalFact]
     public virtual async Task Column_with_custom_converter()

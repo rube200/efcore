@@ -132,7 +132,9 @@ public class SqliteTypeMappingTest : RelationalTypeMappingTest
 
         Test_GenerateSqlLiteral_helper(typeMapping, new TimeOnly(13, 10, 15), "'13:10:15'");
         Test_GenerateSqlLiteral_helper(typeMapping, new TimeOnly(13, 10, 15, 120), "'13:10:15.1200000'");
+#if NET7_0_OR_GREATER
         Test_GenerateSqlLiteral_helper(typeMapping, new TimeOnly(13, 10, 15, 120, 20), "'13:10:15.1200200'");
+#endif
     }
 
     public override void Decimal_literal_generated_correctly()

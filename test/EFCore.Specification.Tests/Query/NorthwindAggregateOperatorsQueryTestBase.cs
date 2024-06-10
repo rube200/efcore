@@ -1,7 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore.TestModels.Northwind;
 
 #pragma warning disable RCS1202 // Avoid NullReferenceException.
@@ -1058,13 +1060,13 @@ public abstract class NorthwindAggregateOperatorsQueryTestBase<TFixture> : Query
     [MemberData(nameof(IsAsyncData))]
     public virtual async Task Contains_with_local_ordered_enumerable_closure(bool async)
     {
-        var ids = new[] { "ABCDE", "ALFKI" }.Order();
+        var ids = new[] { "ABCDE", "ALFKI" }.OrderBy(e => e);
 
         await AssertQuery(
             async,
             ss => ss.Set<Customer>().Where(c => ids.Contains(c.CustomerID)));
 
-        ids = new[] { "ABCDE" }.Order();
+        ids = new[] { "ABCDE" }.OrderBy(e => e);
 
         await AssertQuery(
             async,
@@ -1076,7 +1078,7 @@ public abstract class NorthwindAggregateOperatorsQueryTestBase<TFixture> : Query
     [MemberData(nameof(IsAsyncData))]
     public virtual Task Contains_with_local_object_ordered_enumerable_closure(bool async)
     {
-        var ids = new List<object> { "ABCDE", "ALFKI" }.Order();
+        var ids = new List<object> { "ABCDE", "ALFKI" }.OrderBy(e => e);
         return AssertQuery(
             async,
             ss => ss.Set<Customer>().Where(c => ids.Contains(EF.Property<object>(c, nameof(Customer.CustomerID)))));
@@ -1086,7 +1088,7 @@ public abstract class NorthwindAggregateOperatorsQueryTestBase<TFixture> : Query
     [MemberData(nameof(IsAsyncData))]
     public virtual Task Contains_with_local_ordered_enumerable_closure_all_null(bool async)
     {
-        var ids = new List<string> { null, null }.Order();
+        var ids = new List<string> { null, null }.OrderBy(e => e);
         return AssertQuery(
             async,
             ss => ss.Set<Customer>().Where(c => ids.Contains(c.CustomerID)),
@@ -1099,7 +1101,7 @@ public abstract class NorthwindAggregateOperatorsQueryTestBase<TFixture> : Query
         => AssertQuery(
             async,
             ss => ss.Set<Customer>().Where(
-                c => new List<string> { "ABCDE", "ALFKI" }.Order().Contains(c.CustomerID)));
+                c => new List<string> { "ABCDE", "ALFKI" }.OrderBy(e => e).Contains(c.CustomerID)));
 
     [ConditionalTheory]
     [MemberData(nameof(IsAsyncData))]
@@ -1109,26 +1111,26 @@ public abstract class NorthwindAggregateOperatorsQueryTestBase<TFixture> : Query
 
         await AssertQuery(
             async,
-            ss => ss.Set<Customer>().Where(c => new List<string> { "ABCDE", id }.Order().Contains(c.CustomerID)));
+            ss => ss.Set<Customer>().Where(c => new List<string> { "ABCDE", id }.OrderBy(e => e).Contains(c.CustomerID)));
 
         id = "ANATR";
 
         await AssertQuery(
             async,
-            ss => ss.Set<Customer>().Where(c => new List<string> { "ABCDE", id }.Order().Contains(c.CustomerID)));
+            ss => ss.Set<Customer>().Where(c => new List<string> { "ABCDE", id }.OrderBy(e => e).Contains(c.CustomerID)));
     }
 
     [ConditionalTheory]
     [MemberData(nameof(IsAsyncData))]
     public virtual async Task Contains_with_local_read_only_collection_closure(bool async)
     {
-        var ids = new[] { "ABCDE", "ALFKI" }.AsReadOnly();
+        var ids = new ReadOnlyCollection<string>(["ABCDE", "ALFKI"]);
 
         await AssertQuery(
             async,
             ss => ss.Set<Customer>().Where(c => ids.Contains(c.CustomerID)));
 
-        ids = new[] { "ABCDE" }.AsReadOnly();
+        ids = new ReadOnlyCollection<string>(["ABCDE"]);
 
         await AssertQuery(
             async,

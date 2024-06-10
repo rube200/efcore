@@ -14,8 +14,10 @@ public class TimeOnlyConvertersTest
 
         Assert.Equal("07:30:15", converter(new TimeOnly(7, 30, 15)));
         Assert.Equal("07:30:15.3330000", converter(new TimeOnly(7, 30, 15, 333)));
+#if NET7_0_OR_GREATER
         Assert.Equal("07:30:15.3334440", converter(new TimeOnly(7, 30, 15, 333, 444)));
-        Assert.Equal("07:30:15.3334445", converter(new TimeOnly(7, 30, 15, 333, 444).Add(new TimeSpan(5))));
+#endif
+        Assert.Equal("07:30:15.3380000", converter(new TimeOnly(7, 30, 15, 333).Add(new TimeSpan(50000))));
         Assert.Equal("00:00:00", converter(new TimeOnly()));
     }
 
@@ -26,8 +28,10 @@ public class TimeOnlyConvertersTest
 
         Assert.Equal(new TimeOnly(7, 30, 15), converter("07:30:15"));
         Assert.Equal(new TimeOnly(7, 30, 15, 333), converter("07:30:15.3330000"));
+#if NET7_0_OR_GREATER
         Assert.Equal(new TimeOnly(7, 30, 15, 333, 444), converter("07:30:15.3334440"));
-        Assert.Equal(new TimeOnly(7, 30, 15, 333, 444).Add(new TimeSpan(5)), converter("07:30:15.3334445"));
+#endif
+        Assert.Equal(new TimeOnly(7, 30, 15, 333).Add(new TimeSpan(50000)), converter("07:30:15.3380000"));
         Assert.Equal(new TimeOnly(), converter("00:00:00"));
 
         Assert.Throws<ArgumentNullException>(() => converter(null));
@@ -41,8 +45,10 @@ public class TimeOnlyConvertersTest
 
         Assert.Equal("07:30:15", converter(new TimeOnly(7, 30, 15)));
         Assert.Equal("07:30:15.3330000", converter(new TimeOnly(7, 30, 15, 333)));
+#if NET7_0_OR_GREATER
         Assert.Equal("07:30:15.3334440", converter(new TimeOnly(7, 30, 15, 333, 444)));
-        Assert.Equal("07:30:15.3334445", converter(new TimeOnly(7, 30, 15, 333, 444).Add(new TimeSpan(5))));
+#endif
+        Assert.Equal("07:30:15.3380000", converter(new TimeOnly(7, 30, 15, 333).Add(new TimeSpan(50000))));
         Assert.Equal("00:00:00", converter(new TimeOnly()));
 
         Assert.Null(converter(null));
@@ -55,8 +61,10 @@ public class TimeOnlyConvertersTest
 
         Assert.Equal(new TimeOnly(7, 30, 15), converter("07:30:15"));
         Assert.Equal(new TimeOnly(7, 30, 15, 333), converter("07:30:15.3330000"));
+#if NET7_0_OR_GREATER
         Assert.Equal(new TimeOnly(7, 30, 15, 333, 444), converter("07:30:15.3334440"));
-        Assert.Equal(new TimeOnly(7, 30, 15, 333, 444).Add(new TimeSpan(5)), converter("07:30:15.3334445"));
+#endif
+        Assert.Equal(new TimeOnly(7, 30, 15, 333).Add(new TimeSpan(50000)), converter("07:30:15.3380000"));
         Assert.Equal(new TimeOnly(), converter("00:00:00"));
 
         Assert.Throws<FormatException>(() => converter("Not a TimeOnly"));

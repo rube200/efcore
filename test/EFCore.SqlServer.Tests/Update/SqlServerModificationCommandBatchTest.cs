@@ -40,7 +40,11 @@ public class SqlServerModificationCommandBatchTest
     public void AddCommand_returns_false_when_max_parameters_are_reached(EntityState entityState, bool withSameTable)
     {
         var typeMapper = CreateTypeMappingSource();
+#if !NET8_0_OR_GREATER
+        var intMapping = ((IRelationalTypeMappingSource)typeMapper).FindMapping(typeof(int));
+#else
         var intMapping = typeMapper.FindMapping(typeof(int));
+#endif
         var paramIndex = 0;
 
         var batch = CreateBatch();
@@ -79,7 +83,11 @@ public class SqlServerModificationCommandBatchTest
     public void AddCommand_when_max_parameters_are_reached_with_pending_commands(bool lastCommandPending)
     {
         var typeMapper = CreateTypeMappingSource();
+#if !NET8_0_OR_GREATER
+        var intMapping = ((IRelationalTypeMappingSource)typeMapper).FindMapping(typeof(int));
+#else
         var intMapping = typeMapper.FindMapping(typeof(int));
+#endif
         var paramIndex = 0;
 
         var batch = CreateBatch();

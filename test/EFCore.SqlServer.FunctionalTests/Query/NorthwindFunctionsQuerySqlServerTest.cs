@@ -1349,6 +1349,7 @@ WHERE [o].[OrderID] = 11077 AND SIGN([o].[Discount]) > 0
         AssertSql();
     }
 
+#if NET8_0_OR_GREATER
     public override async Task Where_math_degrees(bool async)
     {
         await base.Where_math_degrees(async);
@@ -1372,6 +1373,7 @@ FROM [Order Details] AS [o]
 WHERE [o].[OrderID] = 11077 AND RADIANS(CAST([o].[Discount] AS float)) > 0.0E0
 """);
     }
+#endif
 
     public override async Task Where_mathf_abs1(bool async)
     {
@@ -1649,6 +1651,7 @@ WHERE [o].[OrderID] = 11077 AND SIGN([o].[Discount]) > 0
 """);
     }
 
+#if NET8_0_OR_GREATER
     public override async Task Where_mathf_degrees(bool async)
     {
         await base.Where_mathf_degrees(async);
@@ -1672,6 +1675,7 @@ FROM [Order Details] AS [o]
 WHERE [o].[OrderID] = 11077 AND RADIANS([o].[Discount]) > CAST(0 AS real)
 """);
     }
+#endif
 
     public override async Task Where_guid_newguid(bool async)
     {
