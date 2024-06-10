@@ -14,4 +14,8 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(MicrosoftCodeAnalysisVersion)" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="BenchmarkDotNet" Version="0.13.12" />
+  </ItemGroup>
+
 </Project>

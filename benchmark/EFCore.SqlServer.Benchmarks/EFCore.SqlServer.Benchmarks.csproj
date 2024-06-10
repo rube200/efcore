@@ -22,4 +22,8 @@
     <None Remove="BenchmarkDotNet.Artifacts\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="BenchmarkDotNet" Version="0.13.12" />
+  </ItemGroup>
+
 </Project>
