@@ -150,7 +150,7 @@ internal class RootCommand : CommandBase
                 args.Add(startupProject.RuntimeFrameworkVersion);
             }
 
-            args.Add(Path.Combine(toolsPath, "net8.0", "any", "ef.dll"));
+            args.Add(Path.Combine(toolsPath, "net8.0", "ef.dll"));
         }
         else if (targetFramework.Identifier == ".NETStandard" || targetFramework.Identifier == ".NETFramework")
         {
