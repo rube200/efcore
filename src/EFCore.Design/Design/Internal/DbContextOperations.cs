@@ -439,7 +439,7 @@ public class DbContextOperations
         }
 
         // Allow selecting types in the default namespace
-        candidates = candidates.Where(t => t.Key.Namespace == null).ToDictionary();
+        candidates = candidates.Where(t => t.Key.Namespace == null).ToDictionary(vt => vt.Key, vt => vt.Value);
         if (candidates.Count == 0)
         {
             throw new OperationException(DesignStrings.MultipleContextsWithQualifiedName(name));
@@ -462,6 +462,6 @@ public class DbContextOperations
                 t => string.Equals(t.Key.Name, name, comparisonType)
                     || string.Equals(t.Key.FullName, name, comparisonType)
                     || string.Equals(t.Key.AssemblyQualifiedName, name, comparisonType))
-            .ToDictionary();
+            .ToDictionary(vt => vt.Key, vt => vt.Value);
     }
 }

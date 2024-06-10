@@ -83,7 +83,11 @@ public class LinqToCSharpSyntaxTranslator : ExpressionVisitor, ILinqToCSharpSynt
     ///     any release. You should only use it directly in your code with extreme caution and knowing that
     ///     doing so can result in application failures when updating to a new Entity Framework Core release.
     /// </summary>
+#if NETSTANDARD2_1
+    public IReadOnlyCollection<ParameterExpression> CapturedVariables
+#else
     public IReadOnlySet<ParameterExpression> CapturedVariables
+#endif
         => _capturedVariables.ToHashSet();
 
     /// <summary>
@@ -232,7 +236,7 @@ public class LinqToCSharpSyntaxTranslator : ExpressionVisitor, ILinqToCSharpSynt
                 return Visit(
                     E.Call(
                         _mathPowMethod ??= typeof(Math).GetMethod(
-                            nameof(Math.Pow), BindingFlags.Static | BindingFlags.Public, new[] { typeof(double), typeof(double) })!,
+                            nameof(Math.Pow), new[] { typeof(double), typeof(double) })!,
                         binary.Left,
                         binary.Right));
 
@@ -896,6 +900,10 @@ public class LinqToCSharpSyntaxTranslator : ExpressionVisitor, ILinqToCSharpSynt
         }
     }
 
+#if NETSTANDARD2_1
+    private static readonly Encoding Latin1 = Encoding.GetEncoding("ISO-8859-1");
+#endif
+
     /// <inheritdoc />
     protected override Expression VisitConstant(ConstantExpression constant)
     {
@@ -993,12 +1001,19 @@ public class LinqToCSharpSyntaxTranslator : ExpressionVisitor, ILinqToCSharpSynt
                         Translate(typeof(Encoding)),
                         IdentifierName(nameof(Encoding.UTF32))),
 
+#if NETSTANDARD2_1 //ISO-8859-1
+                Encoding encoding when encoding == Latin1
+                    => MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        Translate(typeof(Encoding)),
+                        IdentifierName(Latin1.EncodingName)),
+#else
                 Encoding encoding when encoding == Encoding.Latin1
                     => MemberAccessExpression(
                         SyntaxKind.SimpleMemberAccessExpression,
                         Translate(typeof(Encoding)),
                         IdentifierName(nameof(Encoding.Latin1))),
-
+#endif
                 Encoding encoding when encoding == Encoding.Default
                     => MemberAccessExpression(
                         SyntaxKind.SimpleMemberAccessExpression,
@@ -2065,7 +2080,7 @@ public class LinqToCSharpSyntaxTranslator : ExpressionVisitor, ILinqToCSharpSynt
             // C# collection initialization syntax only works when Add is called on an IEnumerable, but LINQ supports arbitrary add
             // methods. Skip these, we'll add them later outside the initializer
             if (binding is MemberListBinding listBinding
-                && (!listBinding.Member.GetMemberType().IsAssignableTo(typeof(IEnumerable))
+                && (!typeof(IEnumerable).IsAssignableFrom(listBinding.Member.GetMemberType())
                     || listBinding.Initializers.Any(e => e.AddMethod.Name != "Add" || e.Arguments.Count != 1)))
             {
                 incompatibleListBindings ??= new List<MemberListBinding>();
@@ -2113,7 +2128,7 @@ public class LinqToCSharpSyntaxTranslator : ExpressionVisitor, ILinqToCSharpSynt
         {
             // C# collection initialization syntax only works when Add is called on an IEnumerable, but LINQ supports arbitrary add
             // methods. Skip these, we'll add them later outside the initializer
-            if (!listInit.NewExpression.Type.IsAssignableTo(typeof(IEnumerable))
+            if (!typeof(IEnumerable).IsAssignableFrom(listInit.NewExpression.Type)
                 || listInit.Initializers.Any(e => e.AddMethod.Name != "Add" || e.Arguments.Count != 1))
             {
                 incompatibleListBindings ??= new List<ElementInit>();

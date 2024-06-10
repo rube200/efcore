@@ -105,7 +105,7 @@ public class SqlServerUdtTypeMapping : RelationalTypeMapping
         if (parameter.Value != null
             && parameter.Value != DBNull.Value)
         {
-            _udtTypeNameSetter(parameter, UdtTypeName);
+            _udtTypeNameSetter!(parameter, UdtTypeName);
         }
     }
 

@@ -1746,7 +1746,7 @@ public static class SqlServerDbFunctionsExtensions
         => throw new InvalidOperationException(CoreStrings.FunctionOnClient(nameof(IsDate)));
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="DateTime" /> structure to the specified year, month, day, hour, minute, second,
+    ///     Initializes a new instance of the <see cref="System.DateTime" /> structure to the specified year, month, day, hour, minute, second,
     ///     and millisecond.
     ///     Corresponds to SQL Server's <c>DATETIMEFROMPARTS(year, month, day, hour, minute, second, millisecond)</c>.
     /// </summary>
@@ -1764,7 +1764,7 @@ public static class SqlServerDbFunctionsExtensions
     /// <param name="second">The seconds (0 through 59).</param>
     /// <param name="millisecond">The milliseconds (0 through 999).</param>
     /// <returns>
-    ///     New instance of the <see cref="DateTime" /> structure to the specified year, month, day, hour, minute, second, and
+    ///     New instance of the <see cref="System.DateTime" /> structure to the specified year, month, day, hour, minute, second, and
     ///     millisecond.
     /// </returns>
     public static DateTime DateTimeFromParts(
@@ -1779,7 +1779,7 @@ public static class SqlServerDbFunctionsExtensions
         => throw new InvalidOperationException(CoreStrings.FunctionOnClient(nameof(DateTimeFromParts)));
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="DateTime" /> structure to the specified year, month, day.
+    ///     Initializes a new instance of the <see cref="System.DateTime" /> structure to the specified year, month, day.
     ///     Corresponds to SQL Server's <c>DATEFROMPARTS(year, month, day)</c>.
     /// </summary>
     /// <remarks>
@@ -1791,7 +1791,7 @@ public static class SqlServerDbFunctionsExtensions
     /// <param name="year">The year (1753 through 9999).</param>
     /// <param name="month">The month (1 through 12).</param>
     /// <param name="day">The day (1 through the number of days in month).</param>
-    /// <returns>New instance of the <see cref="DateTime" /> structure to the specified year, month, day.</returns>
+    /// <returns>New instance of the <see cref="System.DateTime" /> structure to the specified year, month, day.</returns>
     public static DateTime DateFromParts(
         this DbFunctions _,
         int year,
@@ -1800,7 +1800,7 @@ public static class SqlServerDbFunctionsExtensions
         => throw new InvalidOperationException(CoreStrings.FunctionOnClient(nameof(DateFromParts)));
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="DateTime" /> structure to the specified year, month, day, hour, minute, second,
+    ///     Initializes a new instance of the <see cref="System.DateTime" /> structure to the specified year, month, day, hour, minute, second,
     ///     fractions, and precision.
     ///     Corresponds to SQL Server's <c>DATETIME2FROMPARTS(year, month, day, hour, minute, seconds, fractions, precision)</c>.
     /// </summary>
@@ -1819,7 +1819,7 @@ public static class SqlServerDbFunctionsExtensions
     /// <param name="fractions">The fractional seconds (0 through 9999999).</param>
     /// <param name="precision">The precision of the datetime2 value (0 through 7).</param>
     /// <returns>
-    ///     New instance of the <see cref="DateTime" /> structure to the specified year, month, day, hour, minute, second, fractions,
+    ///     New instance of the <see cref="System.DateTime" /> structure to the specified year, month, day, hour, minute, second, fractions,
     ///     and precision.
     /// </returns>
     public static DateTime DateTime2FromParts(
@@ -1879,7 +1879,7 @@ public static class SqlServerDbFunctionsExtensions
         => throw new InvalidOperationException(CoreStrings.FunctionOnClient(nameof(DateTimeOffsetFromParts)));
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="DateTime" /> structure to the specified year, month, day, hour and minute.
+    ///     Initializes a new instance of the <see cref="System.DateTime" /> structure to the specified year, month, day, hour and minute.
     ///     Corresponds to SQL Server's <c>SMALLDATETIMEFROMPARTS(year, month, day, hour, minute)</c>.
     /// </summary>
     /// <remarks>
@@ -1893,7 +1893,7 @@ public static class SqlServerDbFunctionsExtensions
     /// <param name="day">The day (1 through the number of days in month).</param>
     /// <param name="hour">The hours (0 through 23).</param>
     /// <param name="minute">The minutes (0 through 59).</param>
-    /// <returns>New instance of the <see cref="DateTime" /> structure to the specified year, month, day, hour and minute.</returns>
+    /// <returns>New instance of the <see cref="System.DateTime" /> structure to the specified year, month, day, hour and minute.</returns>
     public static DateTime SmallDateTimeFromParts(
         this DbFunctions _,
         int year,
@@ -2097,7 +2097,7 @@ public static class SqlServerDbFunctionsExtensions
     /// </summary>
     /// <remarks>
     ///     <para>
-    ///         Note that the <see cref="DateTime.Kind" /> of <paramref name="dateTime" /> is not taken into account when performing the
+    ///         Note that the <see cref="System.DateTime.Kind" /> of <paramref name="dateTime" /> is not taken into account when performing the
     ///         conversion; the offset for the provided time zone is simply applied as-is.
     ///     </para>
     ///     <para>

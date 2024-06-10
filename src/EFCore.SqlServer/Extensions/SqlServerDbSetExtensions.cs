@@ -17,7 +17,7 @@ public static class SqlServerDbSetExtensions
     /// </summary>
     /// <remarks>
     ///     <para>
-    ///         Temporal information is stored in UTC format on the database, so any <see cref="DateTime" /> arguments in local time may lead to
+    ///         Temporal information is stored in UTC format on the database, so any <see cref="System.DateTime" /> arguments in local time may lead to
     ///         unexpected results.
     ///     </para>
     ///     <para>
@@ -29,7 +29,7 @@ public static class SqlServerDbSetExtensions
     ///     </para>
     /// </remarks>
     /// <param name="source">Source DbSet on which the temporal operation is applied.</param>
-    /// <param name="utcPointInTime"><see cref="DateTime" /> representing a point in time for which the results should be returned.</param>
+    /// <param name="utcPointInTime"><see cref="System.DateTime" /> representing a point in time for which the results should be returned.</param>
     /// <returns>An <see cref="IQueryable" /> representing the entities at a given point in time.</returns>
     public static IQueryable<TEntity> TemporalAsOf<TEntity>(
         this DbSet<TEntity> source,
@@ -61,7 +61,7 @@ public static class SqlServerDbSetExtensions
     ///         with the same key.
     ///     </para>
     ///     <para>
-    ///         Temporal information is stored in UTC format on the database, so any <see cref="DateTime" /> arguments in local time may lead to
+    ///         Temporal information is stored in UTC format on the database, so any <see cref="System.DateTime" /> arguments in local time may lead to
     ///         unexpected results.
     ///     </para>
     ///     <para>
@@ -108,7 +108,7 @@ public static class SqlServerDbSetExtensions
     ///         with the same key.
     ///     </para>
     ///     <para>
-    ///         Temporal information is stored in UTC format on the database, so any <see cref="DateTime" /> arguments in local time may lead to
+    ///         Temporal information is stored in UTC format on the database, so any <see cref="System.DateTime" /> arguments in local time may lead to
     ///         unexpected results.
     ///     </para>
     ///     <para>
@@ -155,7 +155,7 @@ public static class SqlServerDbSetExtensions
     ///         with the same key.
     ///     </para>
     ///     <para>
-    ///         Temporal information is stored in UTC format on the database, so any <see cref="DateTime" /> arguments in local time may lead to
+    ///         Temporal information is stored in UTC format on the database, so any <see cref="System.DateTime" /> arguments in local time may lead to
     ///         unexpected results.
     ///     </para>
     ///     <para>

@@ -156,8 +156,8 @@ public class SqlServerGeometryTypeMapping<TGeometry> : RelationalGeometryTypeMap
             parameter.Value = SqlBytes.Null;
         }
 
-        _sqlDbTypeSetter(parameter, SqlDbType.Udt);
-        _udtTypeNameSetter(parameter, _isGeography ? "geography" : "geometry");
+        _sqlDbTypeSetter!(parameter, SqlDbType.Udt);
+        _udtTypeNameSetter!(parameter, _isGeography ? "geography" : "geometry");
     }
 
     private static SqlServerBytesReader CreateReader(NtsGeometryServices services, bool isGeography)

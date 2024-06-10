@@ -1,9 +1,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-#if NETSTANDARD2_1
-using Microsoft.EntityFrameworkCore.NetStandard2._1;
-#endif
 using System.Collections.Concurrent;
 using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
 using Microsoft.EntityFrameworkCore.Internal;

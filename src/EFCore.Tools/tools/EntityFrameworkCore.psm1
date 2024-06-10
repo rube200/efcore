@@ -1215,28 +1215,7 @@ function EF($project, $startupProject, $params, $applicationArgs, [switch] $skip
     $frameworkName = New-Object 'System.Runtime.Versioning.FrameworkName' $targetFrameworkMoniker
     $targetFramework = $frameworkName.Identifier
 
-    if ($targetFramework -in '.NETFramework')
-    {
-        $platformTarget = GetPlatformTarget $startupProject
-        if ($platformTarget -eq 'x86')
-        {
-            $exePath = Join-Path $PSScriptRoot 'net461\win-x86\ef.exe'
-        }
-        elseif ($platformTarget -eq 'ARM64')
-        {
-            $exePath = Join-Path $PSScriptRoot 'net461\win-arm64\ef.exe'
-        }
-        elseif ($platformTarget -in 'AnyCPU', 'x64')
-        {
-            $exePath = Join-Path $PSScriptRoot 'net461\any\ef.exe'
-        }
-        else
-        {
-            throw "Startup project '$($startupProject.ProjectName)' has an active platform of '$platformTarget'. Select " +
-                'a different platform and try again.'
-        }
-    }
-    elseif ($targetFramework -eq '.NETCoreApp')
+    if ($targetFramework -eq '.NETCoreApp')
     {
         $targetPlatformIdentifier = GetCpsProperty $startupProject 'TargetPlatformIdentifier'
         if ($targetPlatformIdentifier -and $targetPlatformIdentifier -ne 'Windows')
@@ -1253,7 +1232,7 @@ function EF($project, $startupProject, $params, $applicationArgs, [switch] $skip
         $projectAssetsFile = GetCpsProperty $startupProject 'ProjectAssetsFile'
         $runtimeConfig = Join-Path $targetDir ($startupTargetName + '.runtimeconfig.json')
         $runtimeFrameworkVersion = GetCpsProperty $startupProject 'RuntimeFrameworkVersion'
-        $efPath = Join-Path $PSScriptRoot 'netcoreapp2.0\any\ef.dll'
+        $efPath = Join-Path $PSScriptRoot ('net' + $frameworkName.Version + '\ef.dll')
 
         $dotnetParams = 'exec', '--depsfile', $depsFile
 
@@ -1280,7 +1259,7 @@ function EF($project, $startupProject, $params, $applicationArgs, [switch] $skip
 
         $params = $dotnetParams + $params
     }
-    elseif ($targetFramework -eq '.NETStandard')
+    elseif ($targetFramework -in '.NETFramework' -Or $targetFramework -eq '.NETStandard')
     {
         throw "Startup project '$($startupProject.ProjectName)' targets framework '.NETStandard'. There is no " +
             'runtime associated with this framework, and projects targeting it cannot be executed directly. To use ' +

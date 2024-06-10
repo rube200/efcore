@@ -119,7 +119,11 @@ public static class SpatialiteLoader
         if (hasDependencyContext)
         {
             var candidateAssets = new Dictionary<(string, string), int>();
+#if NETSTANDARD2_1
+            var rid = AppContext.GetData("RUNTIME_IDENTIFIER") as string;
+#else
             var rid = RuntimeInformation.RuntimeIdentifier;
+#endif
             var rids = DependencyContext.Default!.RuntimeGraph.FirstOrDefault(g => g.Runtime == rid)?.Fallbacks.ToList()
                 ?? new List<string?>();
             rids.Insert(0, rid);

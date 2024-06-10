@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Collections;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.InMemory.Internal;
 
 namespace Microsoft.EntityFrameworkCore.InMemory.Query.Internal;
@@ -129,7 +130,7 @@ public partial class InMemoryShapedQueryCompilingExpressionVisitor
                     {
                         _cancellationToken.ThrowIfCancellationRequested();
 
-                        return ValueTask.FromResult(MoveNextHelper());
+                        return new ValueTask<bool>(MoveNextHelper());
                     }
                     finally
                     {

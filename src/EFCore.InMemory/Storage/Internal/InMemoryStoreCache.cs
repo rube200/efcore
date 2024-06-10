@@ -35,7 +35,7 @@ public class InMemoryStoreCache : IInMemoryStoreCache
                 ref options.DatabaseRoot.Instance,
                 () => new ConcurrentDictionary<string, IInMemoryStore>());
 
-            _namedStores = (ConcurrentDictionary<string, IInMemoryStore>)options.DatabaseRoot.Instance;
+            _namedStores = (ConcurrentDictionary<string, IInMemoryStore>)options.DatabaseRoot.Instance!;
         }
         else
         {

@@ -35,7 +35,9 @@ public class SqliteMathTranslator : IMethodCallTranslator
         { typeof(Math).GetMethod(nameof(Math.Exp), new[] { typeof(double) })!, "exp" },
         { typeof(Math).GetMethod(nameof(Math.Floor), new[] { typeof(double) })!, "floor" },
         { typeof(Math).GetMethod(nameof(Math.Log), new[] { typeof(double) })!, "ln" },
+        #if !NETSTANDARD2_1
         { typeof(Math).GetMethod(nameof(Math.Log2), new[] { typeof(double) })!, "log2" },
+#endif
         { typeof(Math).GetMethod(nameof(Math.Log10), new[] { typeof(double) })!, "log10" },
         { typeof(Math).GetMethod(nameof(Math.Max), new[] { typeof(byte), typeof(byte) })!, "max" },
         { typeof(Math).GetMethod(nameof(Math.Max), new[] { typeof(double), typeof(double) })!, "max" },
@@ -68,8 +70,10 @@ public class SqliteMathTranslator : IMethodCallTranslator
         { typeof(Math).GetMethod(nameof(Math.Tan), new[] { typeof(double) })!, "tan" },
         { typeof(Math).GetMethod(nameof(Math.Tanh), new[] { typeof(double) })!, "tanh" },
         { typeof(Math).GetMethod(nameof(Math.Truncate), new[] { typeof(double) })!, "trunc" },
+#if !NETSTANDARD2_1
         { typeof(double).GetRuntimeMethod(nameof(double.DegreesToRadians), new[] { typeof(double) })!, "radians" },
         { typeof(double).GetRuntimeMethod(nameof(double.RadiansToDegrees), new[] { typeof(double) })!, "degrees" },
+#endif
         { typeof(MathF).GetMethod(nameof(MathF.Acos), new[] { typeof(float) })!, "acos" },
         { typeof(MathF).GetMethod(nameof(MathF.Acosh), new[] { typeof(float) })!, "acosh" },
         { typeof(MathF).GetMethod(nameof(MathF.Asin), new[] { typeof(float) })!, "asin" },
@@ -84,7 +88,9 @@ public class SqliteMathTranslator : IMethodCallTranslator
         { typeof(MathF).GetMethod(nameof(MathF.Floor), new[] { typeof(float) })!, "floor" },
         { typeof(MathF).GetMethod(nameof(MathF.Log), new[] { typeof(float) })!, "ln" },
         { typeof(MathF).GetMethod(nameof(MathF.Log10), new[] { typeof(float) })!, "log10" },
+#if !NETSTANDARD2_1
         { typeof(MathF).GetMethod(nameof(MathF.Log2), new[] { typeof(float) })!, "log2" },
+#endif
         { typeof(MathF).GetMethod(nameof(MathF.Pow), new[] { typeof(float), typeof(float) })!, "pow" },
         { typeof(MathF).GetMethod(nameof(MathF.Round), new[] { typeof(float) })!, "round" },
         { typeof(MathF).GetMethod(nameof(MathF.Sin), new[] { typeof(float) })!, "sin" },
@@ -93,8 +99,10 @@ public class SqliteMathTranslator : IMethodCallTranslator
         { typeof(MathF).GetMethod(nameof(MathF.Tan), new[] { typeof(float) })!, "tan" },
         { typeof(MathF).GetMethod(nameof(MathF.Tanh), new[] { typeof(float) })!, "tanh" },
         { typeof(MathF).GetMethod(nameof(MathF.Truncate), new[] { typeof(float) })!, "trunc" },
+#if !NETSTANDARD2_1
         { typeof(float).GetRuntimeMethod(nameof(float.DegreesToRadians), new[] { typeof(float) })!, "radians" },
         { typeof(float).GetRuntimeMethod(nameof(float.RadiansToDegrees), new[] { typeof(float) })!, "degrees" }
+#endif
     };
 
     private static readonly List<MethodInfo> _roundWithDecimalMethods = new()
