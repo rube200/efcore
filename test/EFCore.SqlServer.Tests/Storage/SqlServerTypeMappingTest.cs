@@ -241,14 +241,12 @@ public class SqlServerTypeMappingTest : RelationalTypeMappingTest
             new TimeSpan(0, 13, 10, 15, 120),
             "'13:10:15.12'");
 
+#if NET7_0_OR_GREATER
         Test_GenerateSqlLiteral_helper(
             GetMapping(typeof(TimeSpan)),
-#if !NET7_0_OR_GREATER
-            new TimeSpan(0, 13, 10, 15, 120),
-#else
             new TimeSpan(0, 13, 10, 15, 120, 20),
-#endif
             "'13:10:15.12002'");
+#endif
     }
 
     public override void DateTime_literal_generated_correctly()

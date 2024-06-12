@@ -47,17 +47,6 @@ public class CrossJoinExpression : JoinExpressionBase
             ? new CrossJoinExpression(table, GetAnnotations())
             : this;
 
-#if NETSTANDARD2_1
-    /// <summary>
-    ///     Creates a new expression that is like this one, but using the supplied children. If all of the children are the same, it will
-    ///     return this expression.
-    /// </summary>
-    /// <param name="table">The <see cref="JoinExpressionBase.Table" /> property of the result.</param>
-    /// <returns>This expression if no children changed, or an expression with the updated children.</returns>
-    public CrossJoinExpression UpdateCross(TableExpressionBase table)
-        => (CrossJoinExpression) Update(table);
-#endif
-
     /// <inheritdoc />
     protected override TableExpressionBase CreateWithAnnotations(IEnumerable<IAnnotation> annotations)
         => new CrossJoinExpression(Table, annotations);

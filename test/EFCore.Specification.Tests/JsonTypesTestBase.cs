@@ -160,7 +160,11 @@ public abstract class JsonTypesTestBase
         public decimal Decimal { get; set; }
     }
 
+#if !NET7_0_OR_GREATER
+    [ConditionalTheory(Skip = "DateOnly.Parse with Culture Info does't work since we are using a lib for DateOnly instead of native time like net6.0")]
+#else
     [ConditionalTheory]
+#endif
     [InlineData("1/1/0001", """{"Prop":"0001-01-01"}""")]
     [InlineData("12/31/9999", """{"Prop":"9999-12-31"}""")]
     [InlineData("5/29/2023", """{"Prop":"2023-05-29"}""")]
@@ -174,7 +178,11 @@ public abstract class JsonTypesTestBase
         public DateOnly DateOnly { get; set; }
     }
 
+#if !NET7_0_OR_GREATER
+    [ConditionalTheory(Skip = "TimeOnly.Parse with Culture Info does't work since we are using a lib for DateOnly instead of native time like net6.0")]
+#else
     [ConditionalTheory]
+#endif
     [InlineData("00:00:00.0000000", """{"Prop":"00:00:00.0000000"}""")]
     [InlineData("23:59:59.9999999", """{"Prop":"23:59:59.9999999"}""")]
     [InlineData("11:05:12.3456789", """{"Prop":"11:05:12.3456789"}""")]
@@ -593,7 +601,11 @@ public abstract class JsonTypesTestBase
         public decimal? Decimal { get; set; }
     }
 
+#if !NET7_0_OR_GREATER
+    [ConditionalTheory(Skip = "DateOnly.Parse with Culture Info does't work since we are using a lib for DateOnly instead of native time like net6.0")]
+#else
     [ConditionalTheory]
+#endif
     [InlineData("1/1/0001", """{"Prop":"0001-01-01"}""")]
     [InlineData("12/31/9999", """{"Prop":"9999-12-31"}""")]
     [InlineData("5/29/2023", """{"Prop":"2023-05-29"}""")]
@@ -608,7 +620,11 @@ public abstract class JsonTypesTestBase
         public DateOnly? DateOnly { get; set; }
     }
 
+#if !NET7_0_OR_GREATER
+    [ConditionalTheory(Skip = "DateOnly.Parse with Culture Info does't work since we are using a lib for DateOnly instead of native time like net6.0")]
+#else
     [ConditionalTheory]
+#endif
     [InlineData("00:00:00.0000000", """{"Prop":"00:00:00.0000000"}""")]
     [InlineData("23:59:59.9999999", """{"Prop":"23:59:59.9999999"}""")]
     [InlineData("11:05:12.3456789", """{"Prop":"11:05:12.3456789"}""")]
@@ -1257,7 +1273,11 @@ public abstract class JsonTypesTestBase
             value == null ? default(Enum64?) : (Enum64)value, json);
 
     [ConditionalTheory]
+#if !NET7_0_OR_GREATER
+    [InlineData((byte)EnumU8.Min, """{"Prop":"Default"}""")]
+#else
     [InlineData((byte)EnumU8.Min, """{"Prop":"Min"}""")]
+#endif
     [InlineData((byte)EnumU8.Max, """{"Prop":"Max"}""")]
     [InlineData((byte)EnumU8.One, """{"Prop":"One"}""")]
     [InlineData((byte)77, """{"Prop":"77"}""")]
@@ -1269,7 +1289,11 @@ public abstract class JsonTypesTestBase
             value == null ? default(EnumU8?) : (EnumU8)value, json);
 
     [ConditionalTheory]
+#if !NET7_0_OR_GREATER
+    [InlineData((ushort)EnumU16.Min, """{"Prop":"Default"}""")]
+#else
     [InlineData((ushort)EnumU16.Min, """{"Prop":"Min"}""")]
+#endif
     [InlineData((ushort)EnumU16.Max, """{"Prop":"Max"}""")]
     [InlineData((ushort)EnumU16.One, """{"Prop":"One"}""")]
     [InlineData((ushort)77, """{"Prop":"77"}""")]
@@ -1281,7 +1305,11 @@ public abstract class JsonTypesTestBase
             value == null ? default(EnumU16?) : (EnumU16)value, json);
 
     [ConditionalTheory]
+#if !NET7_0_OR_GREATER
+    [InlineData((uint)EnumU32.Min, """{"Prop":"Default"}""")]
+#else
     [InlineData((uint)EnumU32.Min, """{"Prop":"Min"}""")]
+#endif
     [InlineData((uint)EnumU32.Max, """{"Prop":"Max"}""")]
     [InlineData((uint)EnumU32.One, """{"Prop":"One"}""")]
     [InlineData((uint)77, """{"Prop":"77"}""")]
@@ -1293,7 +1321,11 @@ public abstract class JsonTypesTestBase
             value == null ? default(EnumU32?) : (EnumU32)value, json);
 
     [ConditionalTheory]
+#if !NET7_0_OR_GREATER
+    [InlineData((ulong)EnumU64.Min, """{"Prop":"Default"}""")]
+#else
     [InlineData((ulong)EnumU64.Min, """{"Prop":"Min"}""")]
+#endif
     [InlineData((ulong)EnumU64.Max, """{"Prop":"Max"}""")]
     [InlineData((ulong)EnumU64.One, """{"Prop":"One"}""")]
     [InlineData((ulong)77, """{"Prop":"77"}""")]

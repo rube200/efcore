@@ -75,11 +75,11 @@ public class TextTemplatingEngineHostTest
     }
 
     [ConditionalFact]
-    public void Error_works()
+    public async Task Error_works()
     {
         var host = new TextTemplatingEngineHost();
 
-        _engine.ProcessTemplateAsync(
+        await _engine.ProcessTemplateAsync(
             @"<# Error(""Hello, Error!""); #>",
             host);
 
@@ -116,11 +116,11 @@ public class TextTemplatingEngineHostTest
     }
 
     [ConditionalFact]
-    public void Output_works()
+    public async Task Output_works()
     {
         var host = new TextTemplatingEngineHost();
 
-        _engine.ProcessTemplateAsync(
+        await _engine.ProcessTemplateAsync(
             @"<#@ output extension="".txt"" encoding=""us-ascii"" #>",
             host);
 
