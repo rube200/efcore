@@ -147,8 +147,10 @@ public class JsonTypesCosmosTest : JsonTypesTestBase
     public override void Can_read_write_collection_of_TimeSpan_JSON_values()
         => Assert.Throws<InvalidOperationException>(() => base.Can_read_write_collection_of_TimeSpan_JSON_values());
 
+#if NET7_0_OR_GREATER
     public override void Can_read_write_collection_of_TimeOnly_JSON_values()
         => Assert.Throws<InvalidOperationException>(() => base.Can_read_write_collection_of_TimeOnly_JSON_values());
+#endif
 
     public override void Can_read_write_collection_of_short_JSON_values()
         => Assert.Throws<InvalidOperationException>(() => base.Can_read_write_collection_of_short_JSON_values());
@@ -189,8 +191,10 @@ public class JsonTypesCosmosTest : JsonTypesTestBase
     public override void Can_read_write_collection_of_nullable_TimeSpan_JSON_values()
         => Assert.Throws<InvalidOperationException>(() => base.Can_read_write_collection_of_nullable_TimeSpan_JSON_values());
 
+#if NET7_0_OR_GREATER
     public override void Can_read_write_collection_of_nullable_TimeOnly_JSON_values()
         => Assert.Throws<InvalidOperationException>(() => base.Can_read_write_collection_of_nullable_TimeOnly_JSON_values());
+#endif
 
     public override void Can_read_write_collection_of_nullable_short_JSON_values()
         => Assert.Throws<InvalidOperationException>(() => base.Can_read_write_collection_of_nullable_short_JSON_values());
