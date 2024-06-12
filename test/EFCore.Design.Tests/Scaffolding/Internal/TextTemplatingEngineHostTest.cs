@@ -15,14 +15,14 @@ public class TextTemplatingEngineHostTest
     public static readonly Engine _engine = new();
 
     [ConditionalFact]
-    public async Task Service_works()
+    public void Service_works()
     {
         var host = new TextTemplatingEngineHost(
             new ServiceCollection()
                 .AddSingleton("Hello, Services!")
                 .BuildServiceProvider());
 
-        var result = await _engine.ProcessTemplateAsync(
+        var result = _engine.ProcessTemplate(
             @"<#@ template hostSpecific=""true"" #><#= ((IServiceProvider)Host).GetService(typeof(string)) #>",
             host);
 
@@ -31,11 +31,11 @@ public class TextTemplatingEngineHostTest
     }
 
     [ConditionalFact]
-    public async Task Session_works()
+    public void Session_works()
     {
         var host = new TextTemplatingEngineHost { Session = new TextTemplatingSession { ["Value"] = "Hello, Session!" } };
 
-        var result = await _engine.ProcessTemplateAsync(
+        var result = _engine.ProcessTemplate(
             @"<#= Session[""Value""] #>",
             host);
 
@@ -44,11 +44,11 @@ public class TextTemplatingEngineHostTest
     }
 
     [ConditionalFact]
-    public async Task Session_works_with_parameter()
+    public void Session_works_with_parameter()
     {
         var host = new TextTemplatingEngineHost { Session = new TextTemplatingSession { ["Value"] = "Hello, Session!" } };
 
-        var result = await _engine.ProcessTemplateAsync(
+        var result = _engine.ProcessTemplate(
             @"<#@ parameter name=""Value"" type=""System.String"" #><#= Value #>",
             host);
 
@@ -57,7 +57,7 @@ public class TextTemplatingEngineHostTest
     }
 
     [ConditionalFact]
-    public async Task Include_works()
+    public void Include_works()
     {
         using var dir = new TempDirectory();
         File.WriteAllText(
@@ -66,7 +66,7 @@ public class TextTemplatingEngineHostTest
 
         var host = new TextTemplatingEngineHost { TemplateFile = Path.Combine(dir, "test.tt") };
 
-        var result = await _engine.ProcessTemplateAsync(
+        var result = _engine.ProcessTemplate(
             @"<#@ include file=""test.ttinclude"" #>",
             host);
 
@@ -75,11 +75,11 @@ public class TextTemplatingEngineHostTest
     }
 
     [ConditionalFact]
-    public async Task Error_works()
+    public void Error_works()
     {
         var host = new TextTemplatingEngineHost();
 
-        await _engine.ProcessTemplateAsync(
+        _engine.ProcessTemplate(
             @"<# Error(""Hello, Error!""); #>",
             host);
 
@@ -88,12 +88,12 @@ public class TextTemplatingEngineHostTest
     }
 
     [ConditionalFact]
-    public async Task Directive_throws_when_processor_unknown()
+    public void Directive_throws_when_processor_unknown()
     {
         var host = new TextTemplatingEngineHost();
 
-        var ex = await Assert.ThrowsAsync<FileNotFoundException>(
-            () => _engine.ProcessTemplateAsync(
+        var ex = Assert.Throws<FileNotFoundException>(
+            () => _engine.ProcessTemplate(
                 @"<#@ test processor=""TestDirectiveProcessor"" #>",
                 host));
 
@@ -101,13 +101,13 @@ public class TextTemplatingEngineHostTest
     }
 
     [ConditionalFact]
-    public async Task ResolvePath_work()
+    public void ResolvePath_work()
     {
         using var dir = new TempDirectory();
 
         var host = new TextTemplatingEngineHost { TemplateFile = Path.Combine(dir, "test.tt") };
 
-        var result = await _engine.ProcessTemplateAsync(
+        var result = _engine.ProcessTemplate(
             @"<#@ template hostSpecific=""true"" #><#= Host.ResolvePath(""data.json"") #>",
             host);
 
@@ -116,11 +116,11 @@ public class TextTemplatingEngineHostTest
     }
 
     [ConditionalFact]
-    public async Task Output_works()
+    public void Output_works()
     {
         var host = new TextTemplatingEngineHost();
 
-        await _engine.ProcessTemplateAsync(
+        _engine.ProcessTemplate(
             @"<#@ output extension="".txt"" encoding=""us-ascii"" #>",
             host);
 
@@ -130,11 +130,11 @@ public class TextTemplatingEngineHostTest
     }
 
     [ConditionalFact]
-    public async Task Assembly_works()
+    public void Assembly_works()
     {
         var host = new TextTemplatingEngineHost();
 
-        var result = await _engine.ProcessTemplateAsync(
+        var result = _engine.ProcessTemplate(
             @"<#@ assembly name=""Microsoft.EntityFrameworkCore"" #><#= nameof(Microsoft.EntityFrameworkCore.DbContext) #>",
             host);
 

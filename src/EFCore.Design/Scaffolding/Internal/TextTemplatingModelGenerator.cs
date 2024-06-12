@@ -107,7 +107,7 @@ public class TextTemplatingModelGenerator : TemplatedModelGenerator
         {
             host.TemplateFile = contextTemplate;
 
-            generatedCode = Engine.ProcessTemplateAsync(File.ReadAllText(contextTemplate), host).Result;
+            generatedCode = Engine.ProcessTemplate(File.ReadAllText(contextTemplate), host);
             CheckEncoding(host.OutputEncoding);
             HandleErrors(host);
         }
@@ -165,7 +165,7 @@ public class TextTemplatingModelGenerator : TemplatedModelGenerator
 
                     if (compiledEntityTypeTemplate is null)
                     {
-                        compiledEntityTypeTemplate = Engine.CompileTemplateAsync(File.ReadAllText(entityTypeTemplate), host, CancellationToken.None).Result;
+                        compiledEntityTypeTemplate = Engine.CompileTemplate(File.ReadAllText(entityTypeTemplate), host);
                         entityTypeExtension = host.Extension;
                         CheckEncoding(host.OutputEncoding);
                     }
@@ -208,7 +208,7 @@ public class TextTemplatingModelGenerator : TemplatedModelGenerator
 
                     if (compiledConfigurationTemplate is null)
                     {
-                        compiledConfigurationTemplate = Engine.CompileTemplateAsync(File.ReadAllText(configurationTemplate), host, CancellationToken.None).Result;
+                        compiledConfigurationTemplate = Engine.CompileTemplate(File.ReadAllText(configurationTemplate), host);
                         configurationExtension = host.Extension;
                         CheckEncoding(host.OutputEncoding);
                     }
