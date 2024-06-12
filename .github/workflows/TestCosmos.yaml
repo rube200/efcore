@@ -1,10 +1,11 @@
 name: Test Cosmos
 
 on:
+  push:
+    branches:
+      - release/*
   pull_request:
     branches:
-      - main
-      - feature/*
       - release/*
 
 permissions: {}
