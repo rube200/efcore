@@ -91,7 +91,10 @@ public abstract class ModelCodeGeneratorTestBase
                 BuildReference.ByName("Microsoft.EntityFrameworkCore.Abstractions"),
                 BuildReference.ByName("Microsoft.EntityFrameworkCore"),
                 BuildReference.ByName("Microsoft.EntityFrameworkCore.Relational"),
-                BuildReference.ByName("Microsoft.EntityFrameworkCore.SqlServer")
+                BuildReference.ByName("Microsoft.EntityFrameworkCore.SqlServer"),
+#if !NET7_0_OR_GREATER
+                BuildReference.ByName("Portable.System.DateTimeOnly")
+#endif
             },
             Sources = new[] { scaffoldedModel.ContextFile }.Concat(scaffoldedModel.AdditionalFiles)
                 .ToDictionary(f => f.Path, f => f.Code),

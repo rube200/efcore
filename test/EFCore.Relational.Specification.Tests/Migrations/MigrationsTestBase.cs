@@ -2179,17 +2179,17 @@ public abstract class MigrationsTestBase<TFixture> : IClassFixture<TFixture>
                     c =>
                     {
                         Assert.Equal("MyComplex_Prop", c.Name);
-                        Assert.Equal(true, c.IsNullable);
+                        Assert.True(c.IsNullable);
                     },
                     c =>
                     {
                         Assert.Equal("MyComplex_MyNestedComplex_Bar", c.Name);
-                        Assert.Equal(true, c.IsNullable);
+                        Assert.True(c.IsNullable);
                     },
                     c =>
                     {
                         Assert.Equal("MyComplex_MyNestedComplex_Foo", c.Name);
-                        Assert.Equal(true, c.IsNullable);
+                        Assert.True(c.IsNullable);
                     });
             });
 

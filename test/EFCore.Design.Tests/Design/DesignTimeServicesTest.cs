@@ -326,7 +326,10 @@ public class UserMigrationsIdGenerator : IMigrationsIdGenerator
                 BuildReference.ByName("Microsoft.EntityFrameworkCore.Relational"),
                 BuildReference.ByName("Microsoft.EntityFrameworkCore.SqlServer"),
                 BuildReference.ByName("Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite"),
-                BuildReference.ByName("Microsoft.Extensions.DependencyInjection.Abstractions")
+                BuildReference.ByName("Microsoft.Extensions.DependencyInjection.Abstractions"),
+#if !NET7_0_OR_GREATER
+                BuildReference.ByName("Portable.System.DateTimeOnly"),
+#endif
             },
             Sources = { { "Startup.cs", assemblyCode } }
         };

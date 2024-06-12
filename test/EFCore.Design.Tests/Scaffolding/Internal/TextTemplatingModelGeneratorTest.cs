@@ -460,6 +460,7 @@ My entity type configuration template
             .Entity("Entity2", b => { })
             .FinalizeModel();
 
+        Assert.True(typeof(IModel).IsAssignableFrom(model.GetType()));
         var result = generator.GenerateModel(
             model,
             new ModelCodeGenerationOptions

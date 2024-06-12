@@ -772,8 +772,8 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityAllTypes>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(false, result.Reference.TestBoolean);
-                Assert.Equal(true, result.Collection[0].TestBoolean);
+                Assert.False(result.Reference.TestBoolean);
+                Assert.True(result.Collection[0].TestBoolean);
             });
 
     [ConditionalFact]
@@ -1217,8 +1217,8 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityAllTypes>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(null, result.Reference.TestNullableInt32);
-                Assert.Equal(null, result.Collection[0].TestNullableInt32);
+                Assert.Null(result.Reference.TestNullableInt32);
+                Assert.Null(result.Collection[0].TestNullableInt32);
             });
 
     [ConditionalFact]
@@ -1305,8 +1305,8 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityAllTypes>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(null, result.Reference.TestNullableEnum);
-                Assert.Equal(null, result.Collection[0].TestNullableEnum);
+                Assert.Null(result.Reference.TestNullableEnum);
+                Assert.Null(result.Collection[0].TestNullableEnum);
             });
 
     [ConditionalFact]
@@ -1349,8 +1349,8 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityAllTypes>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(null, result.Reference.TestNullableEnumWithIntConverter);
-                Assert.Equal(null, result.Collection[0].TestNullableEnumWithIntConverter);
+                Assert.Null(result.Reference.TestNullableEnumWithIntConverter);
+                Assert.Null(result.Collection[0].TestNullableEnumWithIntConverter);
             });
 
     [ConditionalFact]
@@ -1393,8 +1393,8 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityAllTypes>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(null, result.Reference.TestNullableEnumWithConverterThatHandlesNulls);
-                Assert.Equal(null, result.Collection[0].TestNullableEnumWithConverterThatHandlesNulls);
+                Assert.Null(result.Reference.TestNullableEnumWithConverterThatHandlesNulls);
+                Assert.Null(result.Collection[0].TestNullableEnumWithConverterThatHandlesNulls);
             });
 
     [ConditionalFact]
@@ -1525,7 +1525,7 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityConverters>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(false, result.Reference.BoolConvertedToIntZeroOne);
+                Assert.False(result.Reference.BoolConvertedToIntZeroOne);
             });
 
     [ConditionalFact]
@@ -1545,7 +1545,7 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityConverters>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(true, result.Reference.BoolConvertedToStringTrueFalse);
+                Assert.True(result.Reference.BoolConvertedToStringTrueFalse);
             });
 
     [ConditionalFact]
@@ -1565,7 +1565,7 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityConverters>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(false, result.Reference.BoolConvertedToStringYN);
+                Assert.False(result.Reference.BoolConvertedToStringYN);
             });
 
     [ConditionalFact]
@@ -2230,8 +2230,8 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityAllTypes>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(null, result.Reference.TestNullableInt32Collection);
-                Assert.Equal(null, result.Collection[0].TestNullableInt32Collection);
+                Assert.Null(result.Reference.TestNullableInt32Collection);
+                Assert.Null(result.Collection[0].TestNullableInt32Collection);
 
                 Assert.True(result.Reference.NewCollectionSet); // Set to null.
                 Assert.True(result.Collection[0].NewCollectionSet); // Set to null.
@@ -2330,8 +2330,8 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityAllTypes>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(null, result.Reference.TestNullableEnumCollection);
-                Assert.Equal(null, result.Collection[0].TestNullableEnumCollection);
+                Assert.Null(result.Reference.TestNullableEnumCollection);
+                Assert.Null(result.Collection[0].TestNullableEnumCollection);
 
                 Assert.True(result.Reference.NewCollectionSet); // Set to null.
                 Assert.True(result.Collection[0].NewCollectionSet); // Set to null.
@@ -2386,8 +2386,8 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityAllTypes>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(null, result.Reference.TestNullableEnumWithIntConverterCollection);
-                Assert.Equal(null, result.Collection[0].TestNullableEnumWithIntConverterCollection);
+                Assert.Null(result.Reference.TestNullableEnumWithIntConverterCollection);
+                Assert.Null(result.Collection[0].TestNullableEnumWithIntConverterCollection);
 
                 Assert.True(result.Reference.NewCollectionSet); // Set to null.
                 Assert.True(result.Collection[0].NewCollectionSet); // Set to null.
@@ -2437,8 +2437,8 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityAllTypes>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(null, result.Reference.TestNullableEnumWithConverterThatHandlesNullsCollection);
-                Assert.Equal(null, result.Collection[0].TestNullableEnumWithConverterThatHandlesNullsCollection);
+                Assert.Null(result.Reference.TestNullableEnumWithConverterThatHandlesNullsCollection);
+                Assert.Null(result.Collection[0].TestNullableEnumWithConverterThatHandlesNullsCollection);
 
                 Assert.False(result.Reference.NewCollectionSet);
                 Assert.False(result.Collection[0].NewCollectionSet);
@@ -2881,7 +2881,7 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityAllTypes>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(null, result.TestNullableInt32Collection);
+                Assert.Null(result.TestNullableInt32Collection);
 
                 Assert.True(result.NewCollectionSet); // Set to null.
             });
@@ -2969,7 +2969,7 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityAllTypes>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(null, result.TestNullableEnumCollection);
+                Assert.Null(result.TestNullableEnumCollection);
 
                 Assert.True(result.NewCollectionSet); // Set to null.
             });
@@ -3016,7 +3016,7 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityAllTypes>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(null, result.TestNullableEnumWithIntConverterCollection);
+                Assert.Null(result.TestNullableEnumWithIntConverterCollection);
 
                 Assert.True(result.NewCollectionSet); // Set to null.
             });
@@ -3060,7 +3060,7 @@ public abstract class JsonUpdateTestBase<TFixture> : IClassFixture<TFixture>
             async context =>
             {
                 var result = await context.Set<JsonEntityAllTypes>().SingleAsync(x => x.Id == 1);
-                Assert.Equal(null, result.TestNullableEnumWithConverterThatHandlesNullsCollection);
+                Assert.Null(result.TestNullableEnumWithConverterThatHandlesNullsCollection);
 
                 Assert.False(result.NewCollectionSet);
             });
