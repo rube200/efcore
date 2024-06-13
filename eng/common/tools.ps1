@@ -184,7 +184,7 @@ function InitializeDotNetCli([bool]$install, [bool]$createSdkLocationFile) {
 
   # Use dotnet installation specified in DOTNET_INSTALL_DIR if it contains the required SDK version,
   # otherwise install the dotnet CLI and SDK to repo local .dotnet directory to avoid potential permission issues.
-  if ((-not $globalJsonHasRuntimes) -and (-not [string]::IsNullOrEmpty($env:DOTNET_INSTALL_DIR)) -and (Test-Path(Join-Path $env:DOTNET_INSTALL_DIR "sdk\$dotnetSdkVersion"))) {
+  if ((-not $globalJsonHasRuntimes) -and (-not [string]::IsNullOrEmpty($env:DOTNET_INSTALL_DIR)) -and (Test-Path(Join-Path $env:DOTNET_INSTALL_DIR "sdk\$dotnetSdkVersion")) -and (Test-Path(Join-Path $env:DOTNET_INSTALL_DIR "sdk\6.0.130"))) {
     $dotnetRoot = $env:DOTNET_INSTALL_DIR
   } else {
     $dotnetRoot = Join-Path $RepoRoot '.dotnet'
@@ -194,6 +194,15 @@ function InitializeDotNetCli([bool]$install, [bool]$createSdkLocationFile) {
         InstallDotNetSdk $dotnetRoot $dotnetSdkVersion
       } else {
         Write-PipelineTelemetryError -Category 'InitializeToolset' -Message "Unable to find dotnet with SDK version '$dotnetSdkVersion'"
+        ExitWithExitCode 1
+      }
+    }
+
+    if (-not (Test-Path(Join-Path $dotnetRoot "sdk\6.0.130"))) {
+      if ($install) {
+        InstallDotNetSdk $dotnetRoot 6.0.130
+      } else {
+        Write-PipelineTelemetryError -Category 'InitializeToolset' -Message "Unable to find dotnet with SDK version '6.0.130'"
         ExitWithExitCode 1
       }
     }
