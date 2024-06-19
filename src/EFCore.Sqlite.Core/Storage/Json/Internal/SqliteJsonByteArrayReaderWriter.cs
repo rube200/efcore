@@ -3,7 +3,7 @@
 
 using System.Text.Json;
 #if NETSTANDARD2_1
-using Microsoft.EntityFrameworkCore.Sqlite.NetStandard2._1;
+using Microsoft.EntityFrameworkCore.NetStandard2._1;
 #endif
 using Microsoft.EntityFrameworkCore.Storage.Json;
 

@@ -4,7 +4,7 @@
 #if NETSTANDARD2_1
 using System.Runtime.CompilerServices;
 
-namespace Microsoft.EntityFrameworkCore.Sqlite.NetStandard2._1
+namespace Microsoft.EntityFrameworkCore.NetStandard2._1
 {
 #pragma warning disable CS1591 // Missing XML comment
     public static class HexConverterEx
