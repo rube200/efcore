@@ -328,7 +328,11 @@ optionsBuilder
                     "An entity comment",
                     model.FindEntityType("TestNamespace.Entity").GetComment()));
 
+#if !NET7_0_OR_GREATER
+        [ConditionalFact(Skip = "DateOnly/TimeOnly tests not supported for netstandard2.1")]
+#else
         [ConditionalFact]
+#endif
         public Task Views_work()
             => TestAsync(
                 modelBuilder => modelBuilder.Entity("Vista").ToView("Vista"),
@@ -561,7 +565,11 @@ optionsBuilder
                     Assert.Empty(entity.GetProperty("ComputedColumn").GetComputedColumnSql());
                 });
 
+#if !NET7_0_OR_GREATER
+        [ConditionalFact(Skip = "DateOnly/TimeOnly tests not supported for netstandard2.1")]
+#else
         [ConditionalFact]
+#endif
         public Task DefaultValue_works_unspecified()
             => TestAsync(
                 modelBuilder => modelBuilder.Entity("Entity").Property<string>("DefaultedColumn").HasDefaultValue(),
@@ -1204,7 +1212,11 @@ public partial class TestDbContext : DbContext
                     Assert.True(sequence.IsCyclic);
                 });
 
+#if !NET7_0_OR_GREATER
+        [ConditionalFact(Skip = "DateOnly/TimeOnly tests not supported for netstandard2.1")]
+#else
         [ConditionalFact]
+#endif
         public Task Trigger_works()
             => TestAsync(
                 modelBuilder => modelBuilder

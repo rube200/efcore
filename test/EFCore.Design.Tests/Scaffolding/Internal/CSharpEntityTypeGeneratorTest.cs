@@ -125,7 +125,11 @@ public partial class Vista
                 Assert.Null(entityType.GetSchema());
             });
 
-    [ConditionalFact]
+#if !NET7_0_OR_GREATER
+    [ConditionalFact(Skip = "DateOnly/TimeOnly tests not supported for netstandard2.1")]
+#else
+        [ConditionalFact]
+#endif
     public Task TableAttribute_is_not_generated_for_default_schema()
         => TestAsync(
             modelBuilder =>
