@@ -18,7 +18,6 @@ variables:
     - name: PostBuildSign
       value: true
   - group: DotNet-HelixApi-Access
-  - group: DotNetBuilds storage account read tokens
   - group: AzureDevOps-Artifact-Feeds-Pats
   - name: _InternalRuntimeDownloadArgs
     value: /p:DotNetRuntimeSourceFeed=https://dotnetbuilds.blob.core.windows.net/internal /p:DotNetRuntimeSourceFeedKey=$(dotnetbuilds-internal-container-read-token-base64)
@@ -117,6 +116,7 @@ extends:
                   arguments: -ConfigFile $(Build.SourcesDirectory)/NuGet.config -Password $Env:Token
                 env:
                   Token: $(dn-bot-dnceng-artifact-feeds-rw)
+              - template: /eng/common/templates-official/steps/enable-internal-runtimes.yml
               - script: eng\common\cibuild.cmd -configuration $(_BuildConfig) -prepareMachine $(_InternalBuildArgs) $(_InternalRuntimeDownloadArgs) $(_AdditionalBuildArgs)
                 env:
                   Test__Cosmos__DefaultConnection: $(_CosmosConnectionUrl)
@@ -144,6 +144,7 @@ extends:
                   arguments: $(Build.SourcesDirectory)/NuGet.config $Token
                 env:
                   Token: $(dn-bot-dnceng-artifact-feeds-rw)
+              - template: /eng/common/templates-official/steps/enable-internal-runtimes.yml
               - script: eng/common/cibuild.sh --configuration $(_BuildConfig) --prepareMachine $(_InternalRuntimeDownloadArgs)
                 env:
                   Test__Cosmos__DefaultConnection: $(_CosmosConnectionUrl)
@@ -185,21 +186,9 @@ extends:
                   arguments: $(Build.SourcesDirectory)/NuGet.config $Token
                 env:
                   Token: $(dn-bot-dnceng-artifact-feeds-rw)
+              - template: /eng/common/templates-official/steps/enable-internal-runtimes.yml
               - script: eng/common/cibuild.sh --configuration $(_BuildConfig) --prepareMachine $(_InternalRuntimeDownloadArgs)
                 displayName: Build
-              - task: AzureCLI@2
-                displayName: Run Cosmos tests
-                inputs:
-                  azureSubscription: EFCosmosTesting
-                  scriptType: bash
-                  scriptLocation: 'inlineScript'
-                  inlineScript: |
-                    ./test.sh --ci --configuration $(_BuildConfig) --projects $(Build.SourcesDirectory)/test/EFCore.Cosmos.FunctionalTests/EFCore.Cosmos.FunctionalTests.csproj
-                env:
-                  Test__Cosmos__DefaultConnection: $(_CosmosConnectionUrl)
-                  Test__Cosmos__UseTokenCredential: true
-                  Test__Cosmos__SubscriptionId: d709b837-4a74-4aec-addc-b6e4b9b23e7e
-                  Test__Cosmos__ResourceGroup: efcosmosci
             templateContext:
               outputs:
               - output: pipelineArtifact
@@ -237,6 +226,16 @@ extends:
                   arguments: -ConfigFile $(Build.SourcesDirectory)/NuGet.config -Password $Env:Token
                 env:
                   Token: $(dn-bot-dnceng-artifact-feeds-rw)
+              - template: /eng/common/templates-official/steps/enable-internal-runtimes.yml
+              - template: /eng/common/templates-official/steps/get-delegation-sas.yml
+                parameters:
+                  federatedServiceConnection: 'dotnetbuilds-internal-read'
+                  outputVariableName: 'dotnetbuilds-internal-container-read-token'
+                  expiryInHours: 3
+                  base64Encode: false
+                  storageAccount: dotnetbuilds
+                  container: internal
+                  permissions: rl
               - script: restore.cmd -ci /p:configuration=$(_BuildConfig) $(_InternalRuntimeDownloadArgs)
                 displayName: Restore packages
               - script: .dotnet\dotnet build eng\helix.proj /restore /t:Test /p:configuration=$(_BuildConfig) /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog $(_InternalRuntimeDownloadArgs)
